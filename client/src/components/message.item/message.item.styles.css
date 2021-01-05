@@ -1,0 +1,11 @@
+.message-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.message-left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}

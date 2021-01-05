@@ -1,11 +1,12 @@
-import React from 'react'
-import './message.styles.css'
+import React from "react";
+import "./message.styles.css";
+import MessageItem from "../message.item/MessageItem";
 const MessageBox = () => {
   return (
-    <div className = 'message-box'>
-      here
+    <div className="message-box">
+      <MessageItem />
     </div>
-  )
-}
+  );
+};
 
-export default MessageBox
+export default MessageBox;
