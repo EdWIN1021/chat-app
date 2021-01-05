@@ -15,16 +15,18 @@ const SendMessage = ({ receiver }) => {
     setMessage(e.target.value);
   };
 
-  const handleOnSubmit = () => {
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
     console.log(message);
     console.log(receiver);
     console.log(currentUser.userName);
+    setMessage("");
   };
 
   return (
     <Form className="message-form" onSubmit={handleOnSubmit}>
       <Input fluid type="text">
-        <input onChange={handleOnChange} />
+        <input value={message} onChange={handleOnChange} />
         <Button type="submit" primary>
           send
         </Button>

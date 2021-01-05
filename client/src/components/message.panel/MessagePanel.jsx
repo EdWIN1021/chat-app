@@ -9,9 +9,11 @@ import { connect } from "react-redux";
 const MessagePanel = ({ receiver }) => {
   return (
     <GridColumn className="message-panel" width={11}>
-      <Header as="h3" block>
-        {receiver}
-      </Header>
+      {receiver !== "" ? (
+        <Header as="h3" block>
+          {receiver}
+        </Header>
+      ) : null}
       <MessageBox />
       <SendMessage />
     </GridColumn>
