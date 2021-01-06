@@ -4,7 +4,7 @@ import { GridColumn } from "semantic-ui-react";
 import FriendList from "../friend.list/FriendList";
 const ContactPanel = () => {
   return (
-    <GridColumn className="contact-panel" width={5}>
+    <GridColumn width={5}>
       <FriendList />
     </GridColumn>
   );
