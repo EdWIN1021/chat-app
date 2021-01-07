@@ -1,12 +1,15 @@
+import React from "react";
 import { auth } from "../../firebase/config";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Menu, Icon, Button } from "semantic-ui-react";
+import { Menu, Button } from "semantic-ui-react";
 import { signOut } from "../../redux/friendReducer/action";
 import AddFriendModal from "../add.friend.modal/AddFriendModal";
+import FriendListModal from "../request.list.modal/RequestList";
 const TheMenu = ({ user }) => {
   const history = useHistory();
   const dispatch = useDispatch();
+
   const handleSignOut = () => {
     auth
       .signOut()
@@ -23,8 +26,9 @@ const TheMenu = ({ user }) => {
     <Menu>
       <Menu.Item>Hello, {user.displayName}</Menu.Item>
       <Menu.Item>
-        <Icon name="mail" /> 23
+        <FriendListModal user={user} />
       </Menu.Item>
+
       <Menu.Item>Your ID:{user.uid}</Menu.Item>
 
       <Menu.Menu position="right">
