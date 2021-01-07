@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Input } from "semantic-ui-react";
-import { connect } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 import { io } from "socket.io-client";
+
 var socket = null;
-const SendMessage = ({ friends, receiver }) => {
-  const [currentUser] = useState(friends[Math.floor(Math.random() * 7)]);
+const SendMessage = () => {
+  // const [currentUser] = useState(friends[Math.floor(Math.random() * 7)]);
+  const friends = useSelector(({ friendReducer }) => friendReducer);
   const [message, setMessage] = useState("");
 
-  console.log(currentUser);
+  // console.log(currentUser);
 
   // useEffect(() => {
   //   socket = io("http://localhost:8000");
@@ -22,11 +24,11 @@ const SendMessage = ({ friends, receiver }) => {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    socket.emit("send", {
-      sender: currentUser.name,
-      receiver,
-      message,
-    });
+    // socket.emit("send", {
+    //   sender: currentUser.name,
+    //   receiver,
+    //   message,
+    // });
     setMessage("");
   };
 
@@ -42,9 +44,11 @@ const SendMessage = ({ friends, receiver }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  receiver: state.friendReducer.receiver,
-  friends: state.friendReducer.friends,
-});
+// const mapStateToProps = (state) => ({
+//   receiver: state.friendReducer.receiver,
+//   friends: state.friendReducer.friends,
+// });
 
-export default connect(mapStateToProps)(SendMessage);
+// export default connect(mapStateToProps)(SendMessage);
+
+export default SendMessage;

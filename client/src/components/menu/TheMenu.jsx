@@ -1,12 +1,18 @@
 import { auth } from "../../firebase/config";
-import { Menu, Icon, Label, Button } from "semantic-ui-react";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Menu, Icon, Button } from "semantic-ui-react";
+import { signOut } from "../../redux/friendReducer/action";
 import AddFriendModal from "../add.friend.modal/AddFriendModal";
-const TheMenu = ({ currentUser }) => {
+const TheMenu = ({ user }) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const handleSignOut = () => {
     auth
       .signOut()
       .then(() => {
-        // Sign-out successful.
+        dispatch(signOut());
+        history.push("/");
       })
       .catch((error) => {
         // An error happened.
@@ -15,20 +21,20 @@ const TheMenu = ({ currentUser }) => {
 
   return (
     <Menu>
-      <Menu.Item>Hello, {currentUser.displayName}</Menu.Item>
+      <Menu.Item>Hello, {user.displayName}</Menu.Item>
       <Menu.Item>
         <Icon name="mail" /> 23
       </Menu.Item>
-      <Menu.Item>Your ID:{currentUser.uid}</Menu.Item>
+      <Menu.Item>Your ID:{user.uid}</Menu.Item>
 
       <Menu.Menu position="right">
         <Menu.Item>
-          <AddFriendModal />
+          <AddFriendModal user={user} />
         </Menu.Item>
 
         <Menu.Item name="Log Out">
           <Button onClick={handleSignOut} primary>
-            LogOut
+            Sign Out
           </Button>
         </Menu.Item>
       </Menu.Menu>

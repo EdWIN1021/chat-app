@@ -1,7 +1,24 @@
 import React, { useState } from "react";
 import { Button, Modal, Input } from "semantic-ui-react";
-const AddFriendModal = () => {
+import { fireStore } from "../../firebase/config";
+const AddFriendModal = ({ user }) => {
   const [open, setOpen] = useState(false);
+  const [searchId, setSearchId] = useState("");
+
+  const handleOnChange = (e) => {
+    setSearchId(e.target.value);
+  };
+
+  const handleOnClick = async (e) => {
+    setOpen(false);
+    console.log(user);
+    const userRef = fireStore
+      .collection("users")
+      .doc(searchId)
+      .collection("requests");
+    const doc = await userRef.add({ id: "weewewew" });
+  };
+
   return (
     <Modal
       centered={false}
@@ -16,13 +33,14 @@ const AddFriendModal = () => {
           <Input
             icon="users"
             iconPosition="left"
-            fluid
             placeholder="Search users..."
+            onChange={handleOnChange}
+            fluid
           />
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        <Button onClick={() => setOpen(false)}>OK</Button>
+        <Button onClick={handleOnClick}>OK</Button>
       </Modal.Actions>
     </Modal>
   );
