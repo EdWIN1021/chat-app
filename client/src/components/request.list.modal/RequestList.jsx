@@ -19,7 +19,7 @@ const RequestListModal = ({ user }) => {
           setRequestList((requestList) => [...requestList, doc.data()]);
         });
       });
-  }, []);
+  });
 
   return (
     <Modal

@@ -73,7 +73,7 @@ const SignUpPage = () => {
         ) : null}
 
         <Form onSubmit={handleOnSubmit} size="large">
-          <Segment stacked>
+          <Segment >
             <Form.Input
               fluid
               icon="user"
