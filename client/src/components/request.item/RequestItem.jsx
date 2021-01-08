@@ -1,22 +1,23 @@
-import React from "react";
-import { Button, Menu, Header } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Button, Menu, Header, Icon } from "semantic-ui-react";
 import { fireStore } from "../../firebase/config";
 const RequestItem = ({ friend, user }) => {
+  const [accepted, setAccepted] = useState(false);
+
   const handleAccept = async () => {
     const userRef = fireStore.collection("users").doc(user.uid);
-    const requestRef = userRef.collection("requests");
-    const requestSnapshot = await requestRef.where("id", "==", friend.id).get();
-    console.log(requestSnapshot.docs[0].id);
-    const friendsRef = userRef.collection("friends");
+    const friendRef = fireStore.collection("users").doc(friend.id);
 
-    // requestSnapshot.forEach((doc) => {
-    //   friendsRef.add(doc.data());
-    // });
-
-    //firend.id
-    //从我的requests移到firends
-    //删除request
-    //firend.id 加到 friends
+    const userRequests = userRef.collection("requests");
+    const userFriends = userRef.collection("friends");
+    const addMe = friendRef.collection("friends");
+    const requestSnapshot = await userRequests
+      .where("id", "==", friend.id)
+      .get();
+    addMe.add({ id: user.uid, displayName: user.displayName });
+    userFriends.add(requestSnapshot.docs[0].data());
+    userRequests.doc(requestSnapshot.docs[0].id).delete();
+    setAccepted(true);
   };
 
   const handleDelete = () => {};
@@ -26,17 +27,27 @@ const RequestItem = ({ friend, user }) => {
       <Menu.Item>
         <Header size="small">{friend.displayName}</Header>
       </Menu.Item>
+
+      {accepted ? (
+        <Menu.Item>
+          <Icon name="check circle" />
+        </Menu.Item>
+      ) : null}
       <Menu.Menu position="right">
-        <Menu.Item>
-          <Button onClick={handleAccept} primary>
-            Accept
-          </Button>
-        </Menu.Item>
-        <Menu.Item>
-          <Button onClick={handleDelete} primary>
-            Delete
-          </Button>
-        </Menu.Item>
+        {accepted ? null : (
+          <>
+            <Menu.Item>
+              <Button onClick={handleAccept} primary>
+                Accept
+              </Button>
+            </Menu.Item>
+            <Menu.Item>
+              <Button onClick={handleDelete} primary>
+                Delete
+              </Button>
+            </Menu.Item>
+          </>
+        )}
       </Menu.Menu>
     </Menu>
   );

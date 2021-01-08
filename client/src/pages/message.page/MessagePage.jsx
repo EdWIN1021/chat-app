@@ -11,7 +11,7 @@ const MessagePage = ({ user }) => {
     <Container>
       <TheMenu user={user} />
       <Grid columns={2} relaxed="very">
-        <ContactPanel />
+        <ContactPanel user={user} />
         <MessagePanel />
       </Grid>
     </Container>
