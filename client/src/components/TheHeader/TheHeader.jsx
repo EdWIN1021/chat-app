@@ -1,6 +1,6 @@
 import React from "react";
 import useStyles from "./TheHeader.styles";
-import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
+import { AppBar, Toolbar, Typography } from "@material-ui/core";
 
 export const TheHeader = () => {
   const classes = useStyles();
@@ -11,7 +11,6 @@ export const TheHeader = () => {
         <Typography variant="h6" className={classes.title}>
           EMessage
         </Typography>
-        <Button color="inherit">Login</Button>
       </Toolbar>
     </AppBar>
   );

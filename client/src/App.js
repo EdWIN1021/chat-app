@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { Box } from "@material-ui/core";
 import TheHeader from "./components/TheHeader/TheHeader";
 import SignInPage from "./pages/SignInPage/SignInPage";
-import SignUpPage from "./pages/SignUpPage";
+import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import MessagePage from "./pages/message.page/MessagePage";
 import PageNotFound from "./pages/NotFoundPage";
 import { signIn } from "./redux/friendReducer/action";

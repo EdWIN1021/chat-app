@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import useStyles from "./SignInPage.styles";
 import { Link } from "react-router-dom";
-import { signIn } from "../../redux/friendReducer/action";
-import { useDispatch } from "react-redux";
-import { auth } from "../../firebase/config";
+import { auth, fireStore, database } from "../../firebase/config";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-
+import useStyles from "./SignUpPage.styles";
 import {
   Typography,
   Button,
@@ -16,31 +13,52 @@ import {
   Box,
 } from "@material-ui/core";
 
-const SignInPage = () => {
+const SignUpPage = () => {
   const [input, setInput] = useState({
+    displayName: "",
     email: "",
     password: "",
   });
 
   const [error, setError] = useState("");
-  const dispatch = useDispatch();
+  const classes = useStyles();
 
   const handleOnChange = (e) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value,
+    });
   };
+
+  const db = fireStore.collection("users");
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
+    console.log(input);
     auth
-      .signInWithEmailAndPassword(input.email, input.password)
-      .then((result) => dispatch(signIn(result)))
+      .createUserWithEmailAndPassword(input.email, input.password)
+      .then((user) => {
+        auth.currentUser
+          .updateProfile({
+            displayName: input.displayName,
+          })
+          .then((result) => {
+            db.doc(auth.currentUser.uid).set({
+              displayName: auth.currentUser.displayName,
+              email: auth.currentUser.email,
+            });
+          })
+          .then((result) => {
+            database.ref("users/" + auth.currentUser.uid).set({
+              email: auth.currentUser.email,
+              displayName: auth.currentUser.displayName,
+            });
+          });
+      })
       .catch((error) => {
         setError(error.message);
       });
-    setInput({ ...input, email: "", password: "" });
   };
-
-  const classes = useStyles();
 
   return (
     <Container component="main" maxWidth="xs">
@@ -50,7 +68,7 @@ const SignInPage = () => {
         </Avatar>
 
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign Up
         </Typography>
 
         {error !== "" ? <ErrorMessage error={error} /> : null}
@@ -61,11 +79,20 @@ const SignInPage = () => {
             margin="normal"
             required
             fullWidth
-            id="email"
+            label="displayName"
+            name="displayName"
+            autoFocus
+            value={input.displayName}
+            onChange={handleOnChange}
+          />
+
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
             label="Email Address"
             name="email"
-            autoComplete="email"
-            autoFocus
             value={input.email}
             onChange={handleOnChange}
           />
@@ -78,9 +105,7 @@ const SignInPage = () => {
             name="password"
             label="Password"
             type="password"
-            id="password"
             value={input.password}
-            autoComplete="current-password"
             onChange={handleOnChange}
           />
 
@@ -91,16 +116,15 @@ const SignInPage = () => {
             color="primary"
             className={classes.submit}
           >
-            Sign In
+            Sign Up
           </Button>
           <Box textAlign="center">
-            Don't have an account?<Link to="/signup"> Sign Up</Link>
+            Already have a account?<Link to="/"> Sign In</Link>
           </Box>
         </form>
       </div>
     </Container>
   );
 };
-// };
 
-export default SignInPage;
+export default SignUpPage;
