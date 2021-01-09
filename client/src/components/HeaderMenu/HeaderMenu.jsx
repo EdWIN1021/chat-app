@@ -22,7 +22,7 @@ const HeaderMenu = () => {
       {currentUser ? (
         <>
           <ProfileDialog currentUser={currentUser} />
-          <FriendRequestDialog />
+          <FriendRequestDialog currentUser={currentUser} />
           <AddFriendDialog currentUser={currentUser} />
 
           <Button color="inherit" onClick={handleSignOut}>

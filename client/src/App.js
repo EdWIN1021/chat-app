@@ -28,15 +28,15 @@ function App() {
       setFetching(false);
     };
     fetchUser();
-  });
+  }, []);
 
   return (
     <Box className="App">
-      <Header currentUser={currentUser} />
       {fetching ? (
         <Loader />
       ) : (
         <>
+          <Header currentUser={currentUser} />
           <Switch>
             <Route
               path="/"
