@@ -6,7 +6,7 @@ import Copyright from "./components/Copyright/Copyright";
 import Loader from "./components/Loader/Loader";
 import { useDispatch } from "react-redux";
 import { Box } from "@material-ui/core";
-import TheHeader from "./components/TheHeader/TheHeader";
+import Header from "./components/Header/Header";
 import SignInPage from "./pages/SignInPage/SignInPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import MessagePage from "./pages/message.page/MessagePage";
@@ -32,7 +32,7 @@ function App() {
 
   return (
     <Box className="App">
-      <TheHeader currentUser={currentUser} />
+      <Header currentUser={currentUser} />
       {fetching ? (
         <Loader />
       ) : (
