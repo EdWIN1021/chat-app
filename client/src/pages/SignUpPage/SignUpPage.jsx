@@ -79,7 +79,7 @@ const SignUpPage = () => {
             margin="normal"
             required
             fullWidth
-            label="displayName"
+            label="DisplayName"
             name="displayName"
             autoFocus
             value={input.displayName}

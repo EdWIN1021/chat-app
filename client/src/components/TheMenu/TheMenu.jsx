@@ -15,7 +15,7 @@ const TheMenu = ({ user }) => {
       .signOut()
       .then(() => {
         dispatch(signOut());
-        history.push("/");
+      
       })
       .catch((error) => {
         // An error happened.

@@ -1,24 +1,31 @@
 import React from "react";
 import "./message.panel.style.css";
-import { Header } from "semantic-ui-react";
+// import { Header } from "semantic-ui-react";
 import MessageBox from "../message.box/MessageBox";
 import SendMessage from "../send.message/SendMessage";
-import { GridColumn } from "semantic-ui-react";
+import { Grid, Box } from "@material-ui/core";
 import { connect } from "react-redux";
+import MessageHeader from "../MessageHeader/MessageHeader";
 
 const MessagePanel = ({ receiver }) => {
   return (
-    <GridColumn className="message-panel" width={11}>
-      {receiver !== "" ? (
+    <Grid item xs={9}>
+      <Box>
+        <MessageHeader />
+        <MessageBox />
+        <SendMessage />
+      </Box>
+    </Grid>
+  );
+};
+
+{
+  /* {receiver !== "" ? (
         <Header as="h3" block>
           {receiver}
         </Header>
-      ) : null}
-      <MessageBox />
-      <SendMessage />
-    </GridColumn>
-  );
-};
+      ) : null} */
+}
 
 const mapStateToProps = (state) => ({
   receiver: state.friendReducer.receiver,

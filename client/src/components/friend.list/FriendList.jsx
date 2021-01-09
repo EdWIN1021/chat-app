@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { fireStore } from "../../firebase/config";
 import "./friend.list.styles.css";
-import { List } from "semantic-ui-react";
-import { connect } from "react-redux";
-import FriendItem from "../firend.item/FriendItem";
-const FriendList = ({ user }) => {
+import FriendItem from "../FriendItem/FriendItem";
+const FriendList = () => {
   const [friendList, setFriendList] = useState([]);
+  const currentUser = useSelector(({ friendReducer }) => friendReducer.user);
+
   useEffect(() => {
     fireStore
       .collection("users")
-      .doc(user.uid)
+      .doc(currentUser.uid)
       .collection("friends")
       .get()
       .then((snapshot) => {
@@ -17,21 +18,24 @@ const FriendList = ({ user }) => {
           setFriendList((friendList) => [...friendList, doc.data()]);
         });
       });
-  }, []);
-  console.log(friendList);
+  });
+
   return (
-    <div className="friend-list">
-      <List divided relaxed>
-        {friendList.map((friend) => (
-          <FriendItem key={friend.id} friend={friend} />
-        ))}
-      </List>
-    </div>
+    <>
+      {friendList ? (
+        <div className="friend-list">
+          {friendList.map((friend) => (
+            <FriendItem key={friend.id} friend={friend} />
+          ))}
+        </div>
+      ) : null}
+    </>
   );
 };
 
-const mapStateToProps = (state) => {
-  return { friends: state.friendReducer.friends };
-};
+export default FriendList;
+// const mapStateToProps = (state) => {
+//   return { friends: state.friendReducer.friends };
+// };
 
-export default connect(mapStateToProps)(FriendList);
+// export default connect(mapStateToProps)(FriendList);

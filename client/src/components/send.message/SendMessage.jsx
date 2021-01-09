@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Input } from "semantic-ui-react";
+import { TextField, Fab, Box } from "@material-ui/core";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { io } from "socket.io-client";
-
+import SendIcon from "@material-ui/icons/Send";
+import "./send.message.css";
 var socket = null;
 const SendMessage = () => {
   // const [currentUser] = useState(friends[Math.floor(Math.random() * 7)]);
@@ -33,14 +35,24 @@ const SendMessage = () => {
   };
 
   return (
-    <Form className="message-form" onSubmit={handleOnSubmit}>
-      <Input fluid type="text">
+    <form className="message-form" onSubmit={handleOnSubmit}>
+      {/* <Input fluid type="text">
         <input value={message} onChange={handleOnChange} />
         <Button type="submit" primary>
           send
         </Button>
-      </Input>
-    </Form>
+      </Input>{" "} */}
+
+      <TextField
+        style={{ width: "70%" }}
+        id="standard-secondary"
+        label="message"
+        color="primary"
+      />
+      <Fab color="primary" aria-label="add">
+        <SendIcon />
+      </Fab>
+    </form>
   );
 };
 

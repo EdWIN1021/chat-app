@@ -19,6 +19,7 @@ function App() {
 
   useEffect(() => {
     const fetchUser = () => {
+      setFetching(true);
       auth.onAuthStateChanged(function (user) {
         if (user) {
           dispatch(signIn(user));
@@ -31,7 +32,7 @@ function App() {
 
   return (
     <Box className="App">
-      <TheHeader />
+      <TheHeader currentUser={currentUser} />
       {fetching ? (
         <Loader />
       ) : (
@@ -53,11 +54,7 @@ function App() {
             <Route
               path="/message"
               render={() =>
-                currentUser ? (
-                  <MessagePage user={currentUser} />
-                ) : (
-                  <Redirect to="/" />
-                )
+                currentUser ? <MessagePage /> : <Redirect to="/" />
               }
             />
             <Route path="*" component={PageNotFound} />
