@@ -4,6 +4,7 @@ import { fireStore } from "../../firebase/config";
 import { useSelector } from "react-redux";
 import SendIcon from "@material-ui/icons/Send";
 import "./send.message.css";
+import firebase from "firebase";
 
 const SendMessage = () => {
   const receiver = useSelector(({ friendReducer }) => friendReducer.receiver);
@@ -42,7 +43,9 @@ const SendMessage = () => {
         .collection("messages")
         .add({
           sender: currentUser.uid,
+          name: currentUser.displayName,
           message,
+          created: firebase.firestore.FieldValue.serverTimestamp(),
         });
 
       await fireStore
@@ -53,7 +56,9 @@ const SendMessage = () => {
         .collection("messages")
         .add({
           sender: currentUser.uid,
+          name: currentUser.displayName,
           message,
+          created: firebase.firestore.FieldValue.serverTimestamp(),
         });
 
       setMessage("");

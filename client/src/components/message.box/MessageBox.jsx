@@ -31,6 +31,7 @@ const MessageBox = () => {
           .collection("friends")
           .doc(friendRefId)
           .collection("messages")
+          .orderBy("created")
           .get()
           .then((snapshot) => {
             snapshot.forEach((doc) => {

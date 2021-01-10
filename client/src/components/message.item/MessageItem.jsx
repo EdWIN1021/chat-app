@@ -13,13 +13,13 @@ const MessageItem = ({ item }) => {
           message={item.message}
           style={{ backgroundColor: "#3f51b5" }}
         />
-        :{item.sender}
+        :{item.name}
       </Box>
     );
   } else {
     return (
       <Box className="message-left" mb={1}>
-        {item.sender}:
+        {item.name}:
         <SnackbarContent
           message={item.message}
           style={{ backgroundColor: "#ffff", color: "black" }}
