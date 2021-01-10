@@ -17,8 +17,12 @@ const useStyles = makeStyles((theme) => ({
 const FriendItem = ({ friend, setReceiver }) => {
   const classes = useStyles();
 
+  const handleOnClick = () => {
+    setReceiver({ id: friend.id, displayName: friend.displayName });
+  };
+
   return (
-    <Box m={2} className={classes.root}>
+    <Box m={2} className={classes.root} onClick={handleOnClick}>
       <Card>
         <CardHeader title={friend.displayName} subheader="September 14, 2016" />
       </Card>

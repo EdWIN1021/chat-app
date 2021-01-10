@@ -1,55 +1,76 @@
-import React, { useState, useEffect } from "react";
-import { Form, Button, Input } from "semantic-ui-react";
-import { TextField, Fab, Box } from "@material-ui/core";
-import { connect, useSelector, useDispatch } from "react-redux";
-import { io } from "socket.io-client";
+import React, { useState } from "react";
+import { TextField, Fab } from "@material-ui/core";
+import { fireStore } from "../../firebase/config";
+import { useSelector } from "react-redux";
 import SendIcon from "@material-ui/icons/Send";
 import "./send.message.css";
-var socket = null;
+
 const SendMessage = () => {
-  // const [currentUser] = useState(friends[Math.floor(Math.random() * 7)]);
-  const friends = useSelector(({ friendReducer }) => friendReducer);
+  const receiver = useSelector(({ friendReducer }) => friendReducer.receiver);
+  const currentUser = useSelector(({ friendReducer }) => friendReducer.user);
   const [message, setMessage] = useState("");
-
-  // console.log(currentUser);
-
-  // useEffect(() => {
-  //   socket = io("http://localhost:8000");
-  //   socket.on(currentUser.name, (socket) => {
-  //     console.log(socket);
-  //   });
-  // }, []);
 
   const handleOnChange = (e) => {
     setMessage(e.target.value);
   };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
-    // socket.emit("send", {
-    //   sender: currentUser.name,
-    //   receiver,
-    //   message,
-    // });
-    setMessage("");
+    if (message !== "") {
+      const friendRef = await fireStore
+        .collection("users")
+        .doc(currentUser.uid)
+        .collection("friends")
+        .where("id", "==", receiver.id)
+        .get();
+
+      const currentUserRef = await fireStore
+        .collection("users")
+        .doc(receiver.id)
+        .collection("friends")
+        .where("id", "==", currentUser.uid)
+        .get();
+
+      const currentUserRefId = await currentUserRef.docs[0].id;
+      const friendRefId = await friendRef.docs[0].id;
+
+      await fireStore
+        .collection("users")
+        .doc(receiver.id)
+        .collection("friends")
+        .doc(currentUserRefId)
+        .collection("messages")
+        .add({
+          sender: currentUser.uid,
+          message,
+        });
+
+      await fireStore
+        .collection("users")
+        .doc(currentUser.uid)
+        .collection("friends")
+        .doc(friendRefId)
+        .collection("messages")
+        .add({
+          sender: currentUser.uid,
+          message,
+        });
+
+      setMessage("");
+    }
   };
 
   return (
     <form className="message-form" onSubmit={handleOnSubmit}>
-      {/* <Input fluid type="text">
-        <input value={message} onChange={handleOnChange} />
-        <Button type="submit" primary>
-          send
-        </Button>
-      </Input>{" "} */}
-
       <TextField
         style={{ width: "70%" }}
         id="standard-secondary"
         label="message"
         color="primary"
+        value={message}
+        onChange={handleOnChange}
       />
-      <Fab color="primary" aria-label="add">
+      <Fab color="primary" type="submit" aria-label="add">
         <SendIcon />
       </Fab>
     </form>

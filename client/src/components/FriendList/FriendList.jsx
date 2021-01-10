@@ -1,28 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { fireStore } from "../../firebase/config";
 import "./friend.list.styles.css";
+import { useSelector } from "react-redux";
 import FriendItem from "../FriendItem/FriendItem";
 const FriendList = () => {
-  const [friendList, setFriendList] = useState([]);
+  const [friendList, setFriendList] = useState(null);
+  const [fetching, setFetching] = useState(null);
   const currentUser = useSelector(({ friendReducer }) => friendReducer.user);
 
   useEffect(() => {
-    fireStore
-      .collection("users")
-      .doc(currentUser.uid)
-      .collection("friends")
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          setFriendList((friendList) => [...friendList, doc.data()]);
+    if (currentUser) {
+      setFetching(true);
+      let temp = [];
+      fireStore
+        .collection("users")
+        .doc(currentUser.uid)
+        .collection("friends")
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            temp.push(doc.data());
+          });
+          setFriendList(temp);
+          setFetching(false);
+          temp = null;
         });
-      });
-  });
+    }
+  }, [currentUser]);
 
+  //监听
   return (
     <>
-      {friendList ? (
+      {fetching === false ? (
         <div className="friend-list">
           {friendList.map((friend) => (
             <FriendItem key={friend.id} friend={friend} />

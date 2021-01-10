@@ -7,13 +7,13 @@ import { Grid, Box } from "@material-ui/core";
 import { connect } from "react-redux";
 import MessageHeader from "../MessageHeader/MessageHeader";
 
-const MessagePanel = ({ receiver }) => {
+const MessagePanel = () => {
   return (
     <Grid item xs={9}>
       <Box>
         <MessageHeader />
         <MessageBox />
-        <SendMessage />
+        {/* <SendMessage /> */}
       </Box>
     </Grid>
   );

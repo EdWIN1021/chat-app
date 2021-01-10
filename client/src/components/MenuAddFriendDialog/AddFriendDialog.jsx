@@ -84,7 +84,7 @@ const AddFriendDialog = ({ currentUser }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleOnClick} color="primary" autoFocus>
-            Agree
+            ok
           </Button>
           <Button onClick={() => setOpen(false)} color="primary" autoFocus>
             Cancle

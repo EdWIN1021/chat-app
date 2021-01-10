@@ -3,7 +3,6 @@ import { auth } from "./firebase/config";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Copyright from "./components/Copyright/Copyright";
-import Loader from "./components/Loader/Loader";
 import { useDispatch } from "react-redux";
 import { Box } from "@material-ui/core";
 import Header from "./components/Header/Header";
@@ -11,56 +10,57 @@ import SignInPage from "./pages/SignInPage/SignInPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import MessagePage from "./pages/message.page/MessagePage";
 import PageNotFound from "./pages/NotFoundPage";
-import { signIn } from "./redux/friendReducer/action";
+import { signIn, signOut } from "./redux/friendReducer/action";
 function App() {
   const currentUser = useSelector(({ friendReducer }) => friendReducer.user);
   const dispatch = useDispatch();
-  const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
-    const fetchUser = () => {
-      setFetching(true);
-      auth.onAuthStateChanged(function (user) {
-        if (user) {
-          dispatch(signIn(user));
-        }
-      });
-      setFetching(false);
-    };
-    fetchUser();
+    auth.onAuthStateChanged(function (user) {
+      if (user) {
+        dispatch(
+          signIn({
+            uid: user.uid,
+            displayName: user.displayName,
+          })
+        );
+      } else {
+        dispatch(signOut());
+      }
+    });
   }, []);
 
   return (
     <Box className="App">
-      {fetching ? (
-        <Loader />
-      ) : (
-        <>
-          <Header currentUser={currentUser} />
-          <Switch>
-            <Route
-              path="/"
-              exact
-              render={() =>
-                currentUser ? <Redirect to="/message" /> : <SignInPage />
-              }
-            />
-            <Route
-              path="/signup"
-              render={() =>
-                currentUser ? <Redirect to="/message" /> : <SignUpPage />
-              }
-            />
-            <Route
-              path="/message"
-              render={() =>
-                currentUser ? <MessagePage /> : <Redirect to="/" />
-              }
-            />
-            <Route path="*" component={PageNotFound} />
-          </Switch>
-        </>
-      )}
+      <Header />
+
+      <Switch>
+        <Route path="/" exact>
+          <Redirect to="/signin" />
+        </Route>
+        <Route
+          exact
+          path="/signin"
+          render={() =>
+            currentUser ? <Redirect to="/message" /> : <SignInPage />
+          }
+        />
+        <Route
+          exact
+          path="/signup"
+          render={() =>
+            currentUser ? <Redirect to="/message" /> : <SignUpPage />
+          }
+        />
+        <Route
+          exact
+          path="/message"
+          render={() =>
+            currentUser ? <MessagePage /> : <Redirect to="/signin" />
+          }
+        />
+        <Route path="*" component={PageNotFound} />
+      </Switch>
       <Copyright />
     </Box>
   );

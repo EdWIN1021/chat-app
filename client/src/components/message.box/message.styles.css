@@ -1,4 +1,10 @@
 .message-box {
   height: 50vh;
   margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.messages {
+  flex-grow: 1;
 }

@@ -67,17 +67,28 @@ const FriendRequestDialog = ({ currentUser }) => {
           aria-describedby="alert-dialog-description"
           fullWidth
         >
-          <DialogTitle id="alert-dialog-title">Requests</DialogTitle>
+          {numOfReq === 0 ? (
+            <DialogTitle id="alert-dialog-title">
+              You have no request
+            </DialogTitle>
+          ) : (
+            <DialogTitle id="alert-dialog-title">Requests</DialogTitle>
+          )}
+
           <DialogContent>
             <List>
-              {requestList.map((request) => (
-                <RequestItem key={request.id} request={request} />
+              {requestList.map((requestUser) => (
+                <RequestItem
+                  key={requestUser.id}
+                  currentUser={currentUser}
+                  requestUser={requestUser}
+                />
               ))}
             </List>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setOpen(false)} color="primary" autoFocus>
-              Agree
+              Ok
             </Button>
           </DialogActions>
         </Dialog>

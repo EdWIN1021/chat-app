@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import useStyles from "./SignInPage.styles";
-import { Link } from "react-router-dom";
-import { signIn } from "../../redux/friendReducer/action";
-import { useDispatch } from "react-redux";
+import { Link, useHistory, Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { auth } from "../../firebase/config";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
@@ -22,8 +21,9 @@ const SignInPage = () => {
     password: "",
   });
 
+  const currentUser = useSelector(({ friendReducer }) => friendReducer.user);
   const [error, setError] = useState("");
-  const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleOnChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -33,7 +33,9 @@ const SignInPage = () => {
     e.preventDefault();
     auth
       .signInWithEmailAndPassword(input.email, input.password)
-      .then((result) => dispatch(signIn(result)))
+      .then((result) => {
+        history.push("/message");
+      })
       .catch((error) => {
         setError(error.message);
       });
