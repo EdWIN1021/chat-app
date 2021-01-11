@@ -10,7 +10,7 @@ const MessagePanel = () => {
     <Grid item xs={9}>
       <Box>
         <MessageHeader />
-        {/* <MessageBox /> */}
+        <MessageBox />
         {/* <SendMessage /> */}
       </Box>
     </Grid>

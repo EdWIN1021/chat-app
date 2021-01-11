@@ -17,3 +17,8 @@ export const setNewTime = (time) => ({
   type: Types.SET_NEW_TIME,
   payload: time,
 });
+
+export const setUpdateMesaage = (updateMessage) => ({
+  type: Types.SET_UPDATE_MESSAGE,
+  payload: updateMessage,
+});

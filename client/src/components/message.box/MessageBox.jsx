@@ -4,61 +4,47 @@ import SendMessage from "../send.message/SendMessage";
 import { fireStore } from "../../firebase/config";
 import { useSelector, useDispatch } from "react-redux";
 import MessageItem from "../message.item/MessageItem";
-import { setNewTime } from "../../redux/friendReducer/action";
 const MessageBox = () => {
   const receiver = useSelector(({ friendReducer }) => friendReducer.receiver);
   const currentUser = useSelector(({ friendReducer }) => friendReducer.user);
-  const newTime = useSelector(({ friendReducer }) => friendReducer.newTime);
+  const updateMessage = useSelector(
+    ({ friendReducer }) => friendReducer.updateMessage
+  );
+  const [gotNewMessage, setGotNewMessage] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [fetching, setFetching] = useState(null);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   if (receiver !== "") {
-  //     console.log(receiver);
-  //     console.log(currentUser);
-  //     setFetching(true);
-  //     let temp = [];
-  //     const fetchMessages = async () => {
-  //       const friendRef = await fireStore
-  //         .collection("users")
-  //         .doc(currentUser.uid)
-  //         .collection("friends")
-  //         .where("id", "==", receiver.id)
-  //         .get();
+  useEffect(() => {
+    let temp = [];
+    fireStore
+      .collection("chats")
+      .doc("users")
+      .collection(currentUser.uid)
+      .doc(receiver.uid)
+      .collection("messages")
+      .orderBy("created")
+      .get()
+      .then((snapshot) => {
+        snapshot.docs.map((doc) => temp.push(doc.data()));
+        setMessages(temp);
+        temp = null;
+      });
+  }, [receiver, updateMessage, gotNewMessage]);
 
-  //       const friendRefId = await friendRef.docs[0].id;
+  useEffect(() => {
+    if (receiver !== "") {
+      fireStore
+        .collection("chats")
+        .doc("users")
+        .collection(receiver.uid)
+        .doc(currentUser.uid)
+        .collection("messages")
+        .onSnapshot((snapshot) => {
+          setGotNewMessage(snapshot);
+        });
+    }
+  }, [receiver]);
 
-  //       await fireStore
-  //         .collection("users")
-  //         .doc(currentUser.uid)
-  //         .collection("friends")
-  //         .doc(friendRefId)
-  //         .collection("messages")
-  //         .orderBy("created")
-  //         .get()
-  //         .then((snapshot) => {
-  //           snapshot.forEach((doc) => {
-  //             temp.push(doc.data());
-  //           });
-  //           setMessages(temp);
-  //           setFetching(false);
-  //           temp = null;
-  //         });
-
-  //       // await fireStore
-  //       //   .collection("users")
-  //       //   .doc(currentUser.uid)
-  //       //   .collection("friends")
-  //       //   .doc(friendRefId)
-  //       //   .collection("messages")
-  //       //   .onSnapshot((snapshot) => dispatch(setNewTime(Date.now())));
-  //     };
-  //     fetchMessages();
-  //   }
-  // }, [receiver, newTime]);
-
-  console.log(messages);
   return (
     <>
       {messages && receiver !== "" ? (

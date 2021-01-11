@@ -9,21 +9,19 @@ const MessageItem = ({ item }) => {
   if (currentUser.uid === item.sender) {
     return (
       <Box className="message-right" mb={1}>
-        <SnackbarContent
-          message={item.message}
-          style={{ backgroundColor: "#3f51b5" }}
-        />
-        :{item.name}
+        <Box className="message-right-content" boxShadow={1}>
+          {item.message}
+        </Box>
+        <Box className="message-name">:{item.name}</Box>
       </Box>
     );
   } else {
     return (
       <Box className="message-left" mb={1}>
-        {item.name}:
-        <SnackbarContent
-          message={item.message}
-          style={{ backgroundColor: "#ffff", color: "black" }}
-        />
+        <Box className="message-name">{item.name}:</Box>
+        <Box className="message-left-content" boxShadow={1}>
+          {item.message}
+        </Box>
       </Box>
     );
   }

@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { TextField, Fab } from "@material-ui/core";
 import { fireStore } from "../../firebase/config";
+import { isEmpty } from "../../Validator/validator";
 import { useSelector, useDispatch } from "react-redux";
 import SendIcon from "@material-ui/icons/Send";
 import "./send.message.css";
-import { setNewTime } from "../../redux/friendReducer/action";
+import { setUpdateMesaage } from "../../redux/friendReducer/action";
 import firebase from "firebase";
-
 const SendMessage = () => {
   const receiver = useSelector(({ friendReducer }) => friendReducer.receiver);
   const currentUser = useSelector(({ friendReducer }) => friendReducer.user);
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
+  const [error, setError] = useState(null);
 
   const handleOnChange = (e) => {
     setMessage(e.target.value);
@@ -19,29 +20,16 @@ const SendMessage = () => {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    if (message !== "") {
-      const friendRef = await fireStore
-        .collection("users")
-        .doc(currentUser.uid)
-        .collection("friends")
-        .where("id", "==", receiver.id)
-        .get();
 
-      const currentUserRef = await fireStore
-        .collection("users")
-        .doc(receiver.id)
-        .collection("friends")
-        .where("id", "==", currentUser.uid)
-        .get();
-
-      const currentUserRefId = await currentUserRef.docs[0].id;
-      const friendRefId = await friendRef.docs[0].id;
-
+    if (isEmpty(message)) {
+      return setError("You cannot send empty message");
+    } else {
+      setError(null);
       await fireStore
-        .collection("users")
-        .doc(receiver.id)
-        .collection("friends")
-        .doc(currentUserRefId)
+        .collection("chats")
+        .doc("users")
+        .collection(currentUser.uid)
+        .doc(receiver.uid)
         .collection("messages")
         .add({
           sender: currentUser.uid,
@@ -51,10 +39,10 @@ const SendMessage = () => {
         });
 
       await fireStore
-        .collection("users")
+        .collection("chats")
+        .doc("users")
+        .collection(receiver.uid)
         .doc(currentUser.uid)
-        .collection("friends")
-        .doc(friendRefId)
         .collection("messages")
         .add({
           sender: currentUser.uid,
@@ -63,7 +51,7 @@ const SendMessage = () => {
           created: firebase.firestore.FieldValue.serverTimestamp(),
         });
 
-      dispatch(setNewTime(Date.now()));
+      dispatch(setUpdateMesaage(message));
       setMessage("");
     }
   };
@@ -73,7 +61,7 @@ const SendMessage = () => {
       <TextField
         style={{ width: "70%" }}
         id="standard-secondary"
-        label="message"
+        label={error ? "You cannot send a empty message" : "message"}
         color="primary"
         value={message}
         onChange={handleOnChange}
