@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { TextField, Fab } from "@material-ui/core";
 import { fireStore } from "../../firebase/config";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import SendIcon from "@material-ui/icons/Send";
 import "./send.message.css";
+import { setNewTime } from "../../redux/friendReducer/action";
 import firebase from "firebase";
 
 const SendMessage = () => {
   const receiver = useSelector(({ friendReducer }) => friendReducer.receiver);
   const currentUser = useSelector(({ friendReducer }) => friendReducer.user);
+  const dispatch = useDispatch();
   const [message, setMessage] = useState("");
 
   const handleOnChange = (e) => {
@@ -61,6 +63,7 @@ const SendMessage = () => {
           created: firebase.firestore.FieldValue.serverTimestamp(),
         });
 
+      dispatch(setNewTime(Date.now()));
       setMessage("");
     }
   };

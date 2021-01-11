@@ -5,12 +5,11 @@ import MessagePanel from "../../components/message.panel/MessagePanel";
 
 const MessagePage = () => {
   return (
-    <Container>
-      <Grid container spacing={3}>
+      <Grid container>
         <ContactPanel />
         <MessagePanel />
       </Grid>
-    </Container>
+  
   );
 };
 

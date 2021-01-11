@@ -1,32 +1,50 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Card, Box } from "@material-ui/core";
-import CardHeader from "@material-ui/core/CardHeader";
+
+import {
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Typography,
+  Divider,
+  Avatar,
+} from "@material-ui/core";
+import "./friend.item.styles.css";
 import { connect } from "react-redux";
 import { setReceiver } from "../../redux/friendReducer/action";
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-    "&:hover": {
-      cursor: "pointer",
-      backgroundColor: "#fafafa",
-    },
-  },
-}));
 
 const FriendItem = ({ friend, setReceiver }) => {
-  const classes = useStyles();
-
   const handleOnClick = () => {
     setReceiver({ id: friend.id, displayName: friend.displayName });
   };
 
   return (
-    <Box m={2} className={classes.root} onClick={handleOnClick}>
-      <Card>
-        <CardHeader title={friend.displayName} subheader="September 14, 2016" />
-      </Card>
-    </Box>
+    <>
+      <ListItem
+        className="friend-item"
+        alignItems="flex-start"
+        onClick={handleOnClick}
+      >
+        <ListItemAvatar>
+          <Avatar
+            alt={friend.displayName[0]}
+            src="/static/images/avatar/1.jpg"
+          />
+        </ListItemAvatar>
+        <ListItemText
+          primary={friend.displayName}
+          secondary={
+            <>
+              <Typography component="span" variant="body2" color="textPrimary">
+                hi
+              </Typography>
+
+              <Typography variant="body2">{"update"}</Typography>
+            </>
+          }
+        />
+      </ListItem>
+      <Divider variant="inset" component="li" />
+    </>
   );
 };
 

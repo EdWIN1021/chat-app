@@ -12,3 +12,8 @@ export const signIn = (user) => ({
 export const signOut = () => ({
   type: Types.SIGN_OUT,
 });
+
+export const setNewTime = (time) => ({
+  type: Types.SET_NEW_TIME,
+  payload: time,
+});

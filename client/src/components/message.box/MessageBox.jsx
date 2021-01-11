@@ -2,13 +2,18 @@ import React, { useEffect, useState } from "react";
 import "./message.styles.css";
 import SendMessage from "../send.message/SendMessage";
 import { fireStore } from "../../firebase/config";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import MessageItem from "../message.item/MessageItem";
+import { setNewTime } from "../../redux/friendReducer/action";
 const MessageBox = () => {
   const receiver = useSelector(({ friendReducer }) => friendReducer.receiver);
   const currentUser = useSelector(({ friendReducer }) => friendReducer.user);
+  const newTime = useSelector(({ friendReducer }) => friendReducer.newTime);
   const [messages, setMessages] = useState([]);
   const [fetching, setFetching] = useState(null);
+  const dispatch = useDispatch();
+  console.log(newTime);
+
   useEffect(() => {
     if (receiver !== "") {
       console.log(receiver);
@@ -41,11 +46,18 @@ const MessageBox = () => {
             setFetching(false);
             temp = null;
           });
-      };
 
+        await fireStore
+          .collection("users")
+          .doc(currentUser.uid)
+          .collection("friends")
+          .doc(friendRefId)
+          .collection("messages")
+          .onSnapshot((snapshot) => dispatch(setNewTime(Date.now())));
+      };
       fetchMessages();
     }
-  }, [receiver]);
+  }, [receiver, newTime]);
 
   console.log(messages);
   return (

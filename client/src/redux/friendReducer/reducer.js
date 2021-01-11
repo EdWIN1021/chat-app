@@ -3,6 +3,7 @@ const INITAIL_STATE = {
   user: null,
   receiver: "",
   messages: [],
+  newTime: "",
 };
 
 const friendReducer = (state = INITAIL_STATE, action) => {
@@ -15,6 +16,9 @@ const friendReducer = (state = INITAIL_STATE, action) => {
 
     case Type.SIGN_OUT:
       return { ...state, user: null };
+
+    case Type.SET_NEW_TIME:
+      return { ...state, newTime: action.payload };
     default:
       return state;
   }

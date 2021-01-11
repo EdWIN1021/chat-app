@@ -1,0 +1,10 @@
+.message-header {
+  display: flex;
+  border-bottom: solid 1px;
+  align-items: center;
+  padding: 10px;
+}
+
+.message-header-title {
+  flex-grow: 1;
+}
