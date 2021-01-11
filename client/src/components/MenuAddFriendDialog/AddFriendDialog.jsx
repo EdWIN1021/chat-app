@@ -32,26 +32,36 @@ const AddFriendDialog = ({ currentUser }) => {
       return setError("You cannot add yourself");
     }
 
-    if (!(await isUserExist(searchId))) {
-      return setError("User does not exist");
-    }
+    // if (!(await isUserExist(searchId))) {
+    //   return setError("User does not exist");
+    // }
 
-    if (await isFriend(currentUser, searchId)) {
-      return setError("This guy is your friend");
-    }
+    // if (await isFriend(currentUser, searchId)) {
+    //   return setError("This guy is your friend");
+    // }
 
-    if (await sentRequest(currentUser, searchId)) {
-      return setError("You cannot sent same request to this guy");
-    }
+    // if (await sentRequest(currentUser, searchId)) {
+    //   return setError("You cannot sent same request to this guy");
+    // }
 
     await fireStore
-      .collection("users")
-      .doc(searchId)
       .collection("requests")
-      .add({
-        id: currentUser.uid,
+      .doc("users")
+      .collection(searchId)
+      .doc(currentUser.uid)
+      .set({
+        uid: currentUser.uid,
         displayName: currentUser.displayName,
       });
+
+    // await fireStore
+    //   .collection("users")
+    //   .doc(searchId)
+    //   .collection("requests")
+    //   .add({
+    //     id: currentUser.uid,
+    //     displayName: currentUser.displayName,
+    //   });
 
     setError("");
   };

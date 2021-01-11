@@ -15,9 +15,9 @@ const ContactPanel = () => {
       setFetching(true);
       let temp = [];
       fireStore
-        .collection("users")
-        .doc(currentUser.uid)
         .collection("friends")
+        .doc("users")
+        .collection(currentUser.uid)
         .get()
         .then((snapshot) => {
           snapshot.forEach((doc) => {
@@ -37,7 +37,7 @@ const ContactPanel = () => {
         {fetching === false ? (
           <>
             {friendList.map((friend) => (
-              <FriendItem key={friend.id} friend={friend} />
+              <FriendItem key={friend.uid} friend={friend} />
             ))}
           </>
         ) : null}

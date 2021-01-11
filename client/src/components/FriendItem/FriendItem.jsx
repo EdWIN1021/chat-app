@@ -14,7 +14,7 @@ import { setReceiver } from "../../redux/friendReducer/action";
 
 const FriendItem = ({ friend, setReceiver }) => {
   const handleOnClick = () => {
-    setReceiver({ id: friend.id, displayName: friend.displayName });
+    setReceiver({ uid: friend.uid, displayName: friend.displayName });
   };
 
   return (
@@ -33,15 +33,12 @@ const FriendItem = ({ friend, setReceiver }) => {
         <ListItemText
           primary={friend.displayName}
           secondary={
-            <>
-              <Typography component="span" variant="body2" color="textPrimary">
-                hi
-              </Typography>
-
-              <Typography variant="body2">{"update"}</Typography>
-            </>
+            <Typography component="span" variant="body2" color="textPrimary">
+              hi
+            </Typography>
           }
         />
+        <Typography variant="body2">{"update"}</Typography>
       </ListItem>
       <Divider variant="inset" component="li" />
     </>

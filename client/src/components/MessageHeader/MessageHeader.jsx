@@ -18,14 +18,6 @@ const MessageHeader = () => {
         <MoreVertIcon />
       </IconButton>
     </Box>
-    // <Card>
-    //   <CardHeader
-    //     action={
-
-    //     }
-    //     title={receiver.displayName}
-    //   />
-    // </Card>
   );
 };
 

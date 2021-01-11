@@ -12,52 +12,51 @@ const MessageBox = () => {
   const [messages, setMessages] = useState([]);
   const [fetching, setFetching] = useState(null);
   const dispatch = useDispatch();
-  console.log(newTime);
 
-  useEffect(() => {
-    if (receiver !== "") {
-      console.log(receiver);
-      console.log(currentUser);
-      setFetching(true);
-      let temp = [];
-      const fetchMessages = async () => {
-        const friendRef = await fireStore
-          .collection("users")
-          .doc(currentUser.uid)
-          .collection("friends")
-          .where("id", "==", receiver.id)
-          .get();
+  // useEffect(() => {
+  //   if (receiver !== "") {
+  //     console.log(receiver);
+  //     console.log(currentUser);
+  //     setFetching(true);
+  //     let temp = [];
+  //     const fetchMessages = async () => {
+  //       const friendRef = await fireStore
+  //         .collection("users")
+  //         .doc(currentUser.uid)
+  //         .collection("friends")
+  //         .where("id", "==", receiver.id)
+  //         .get();
 
-        const friendRefId = await friendRef.docs[0].id;
+  //       const friendRefId = await friendRef.docs[0].id;
 
-        await fireStore
-          .collection("users")
-          .doc(currentUser.uid)
-          .collection("friends")
-          .doc(friendRefId)
-          .collection("messages")
-          .orderBy("created")
-          .get()
-          .then((snapshot) => {
-            snapshot.forEach((doc) => {
-              temp.push(doc.data());
-            });
-            setMessages(temp);
-            setFetching(false);
-            temp = null;
-          });
+  //       await fireStore
+  //         .collection("users")
+  //         .doc(currentUser.uid)
+  //         .collection("friends")
+  //         .doc(friendRefId)
+  //         .collection("messages")
+  //         .orderBy("created")
+  //         .get()
+  //         .then((snapshot) => {
+  //           snapshot.forEach((doc) => {
+  //             temp.push(doc.data());
+  //           });
+  //           setMessages(temp);
+  //           setFetching(false);
+  //           temp = null;
+  //         });
 
-        await fireStore
-          .collection("users")
-          .doc(currentUser.uid)
-          .collection("friends")
-          .doc(friendRefId)
-          .collection("messages")
-          .onSnapshot((snapshot) => dispatch(setNewTime(Date.now())));
-      };
-      fetchMessages();
-    }
-  }, [receiver, newTime]);
+  //       // await fireStore
+  //       //   .collection("users")
+  //       //   .doc(currentUser.uid)
+  //       //   .collection("friends")
+  //       //   .doc(friendRefId)
+  //       //   .collection("messages")
+  //       //   .onSnapshot((snapshot) => dispatch(setNewTime(Date.now())));
+  //     };
+  //     fetchMessages();
+  //   }
+  // }, [receiver, newTime]);
 
   console.log(messages);
   return (

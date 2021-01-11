@@ -3,39 +3,47 @@ import { fireStore } from "../../firebase/config";
 import { ListItem, ListItemText, Button, Divider } from "@material-ui/core";
 
 const RequestItem = ({ requestUser, currentUser }) => {
-  const currentUserRef = fireStore.collection("users").doc(currentUser.uid);
-  const requestUserRef = fireStore.collection("users").doc(requestUser.id);
-
   const handleAccept = async () => {
-    const currentUserRequests = currentUserRef.collection("requests");
-    const findRequestUser = await currentUserRequests
-      .where("id", "==", requestUser.id)
-      .get();
-    const requestId = findRequestUser.docs[0].id;
-    await currentUserRequests.doc(requestId).delete();
+    await fireStore
+      .collection("friends")
+      .doc("users")
+      .collection(currentUser.uid)
+      .doc(requestUser.uid)
+      .set({
+        uid: requestUser.uid,
+        displayName: requestUser.displayName,
+      });
 
-    await currentUserRef.collection("friends").add({
-      id: requestUser.id,
-      displayName: requestUser.displayName,
-    });
-    await requestUserRef.collection("friends").add({
-      id: currentUser.uid,
-      displayName: currentUser.displayName,
-    });
+    await fireStore
+      .collection("friends")
+      .doc("users")
+      .collection(requestUser.uid)
+      .doc(currentUser.uid)
+      .set({
+        uid: currentUser.uid,
+        displayName: currentUser.displayName,
+      });
+
+    await fireStore
+      .collection("requests")
+      .doc("users")
+      .collection(currentUser.uid)
+      .doc(requestUser.uid)
+      .delete();
   };
 
   const handleDelete = async () => {
-    const currentUserRequests = currentUserRef.collection("requests");
-    const findRequestUser = await currentUserRequests
-      .where("id", "==", requestUser.id)
-      .get();
-    const requestId = findRequestUser.docs[0].id;
-    await currentUserRequests.doc(requestId).delete();
+    await fireStore
+      .collection("requests")
+      .doc("users")
+      .collection(currentUser.uid)
+      .doc(requestUser.uid)
+      .delete();
   };
 
   return (
     <>
-      <ListItem alignItems="flex-start" key={requestUser.id}>
+      <ListItem alignItems="flex-start" key={requestUser.uid}>
         <ListItemText primary={requestUser.displayName} />
         <Button color="primary" onClick={handleAccept}>
           accept

@@ -20,39 +20,32 @@ import RequestItem from "../RequestItem/RequestItem";
 const FriendRequestDialog = ({ currentUser }) => {
   const [open, setOpen] = useState(false);
   const [numOfReq, setNumOfReq] = useState(null);
-  const [requestList, setRequestList] = useState([]);
-  const [fetching, setFetching] = useState(null);
+  const [requestList, setRequestList] = useState(null);
+
   useEffect(() => {
-    setFetching(true);
     let temp = [];
     fireStore
-      .collection("users")
-      .doc(currentUser.uid)
       .collection("requests")
+      .doc("users")
+      .collection(currentUser.uid)
       .get()
       .then((snapshot) => {
         setNumOfReq(snapshot.size);
-        snapshot.forEach((doc) => {
-          temp.push(doc.data());
-          // setRequestList((requestList) => [...requestList, doc.data()]);
-        });
+        snapshot.docs.map((doc) => temp.push(doc.data()));
         setRequestList(temp);
-        setFetching(false);
         temp = null;
       });
-  }, [numOfReq]);
-
-  useEffect(() => {
-    fireStore
-      .collection("users")
-      .doc(currentUser.uid)
-      .collection("requests")
-      .onSnapshot((snapshot) => setNumOfReq(snapshot.size));
   }, []);
 
-  if (fetching) {
-    return null;
-  } else {
+  // useEffect(() => {
+  //   fireStore
+  //     .collection("users")
+  //     .doc(currentUser.uid)
+  //     .collection("requests")
+  //     .onSnapshot((snapshot) => setNumOfReq(snapshot.size));
+  // }, []);
+
+  if (requestList) {
     return (
       <>
         <IconButton color="inherit" onClick={() => setOpen(true)}>
@@ -79,7 +72,7 @@ const FriendRequestDialog = ({ currentUser }) => {
             <List>
               {requestList.map((requestUser) => (
                 <RequestItem
-                  key={requestUser.id}
+                  key={requestUser.uid}
                   currentUser={currentUser}
                   requestUser={requestUser}
                 />
@@ -94,6 +87,8 @@ const FriendRequestDialog = ({ currentUser }) => {
         </Dialog>
       </>
     );
+  } else {
+    return null;
   }
 };
 

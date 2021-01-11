@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { auth, fireStore, database } from "../../firebase/config";
+import { auth, fireStore } from "../../firebase/config";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import useStyles from "./SignUpPage.styles";
@@ -30,11 +30,10 @@ const SignUpPage = () => {
     });
   };
 
-  const db = fireStore.collection("users");
+  const userDB = fireStore.collection("users");
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    console.log(input);
     auth
       .createUserWithEmailAndPassword(input.email, input.password)
       .then((user) => {
@@ -43,15 +42,9 @@ const SignUpPage = () => {
             displayName: input.displayName,
           })
           .then((result) => {
-            db.doc(auth.currentUser.uid).set({
+            userDB.doc(auth.currentUser.uid).set({
               displayName: auth.currentUser.displayName,
               email: auth.currentUser.email,
-            });
-          })
-          .then((result) => {
-            database.ref("users/" + auth.currentUser.uid).set({
-              email: auth.currentUser.email,
-              displayName: auth.currentUser.displayName,
             });
           });
       })
