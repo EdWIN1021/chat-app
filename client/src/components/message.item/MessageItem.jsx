@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { SnackbarContent, Box, Avatar } from "@material-ui/core";
 const MessageItem = ({ item }) => {
   const currentUser = useSelector(({ friendReducer }) => friendReducer.user);
-
   if (currentUser.uid === item.sender) {
     return (
       <Box className="message-right" mb={1}>

@@ -36,7 +36,7 @@ const ContactPanel = () => {
       <List className="friend-list">
         {fetching === false ? (
           <>
-            {friendList.map((friend) => (
+            {friendList.map((friend, index) => (
               <FriendItem key={friend.uid} friend={friend} />
             ))}
           </>

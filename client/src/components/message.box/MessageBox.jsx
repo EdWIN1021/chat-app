@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./message.styles.css";
 import SendMessage from "../send.message/SendMessage";
 import { fireStore } from "../../firebase/config";
@@ -11,8 +11,15 @@ const MessageBox = () => {
     ({ friendReducer }) => friendReducer.updateMessage
   );
   const [gotNewMessage, setGotNewMessage] = useState(null);
+  const lastMessageRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ smooth: true });
+    }
+  });
 
   useEffect(() => {
     let temp = [];
@@ -50,13 +57,19 @@ const MessageBox = () => {
       {messages && receiver !== "" ? (
         <div className="message-box">
           <div className="messages">
-            {messages.map((item, index) => (
-              <MessageItem key={index} item={item} />
-            ))}
+            {messages.map((item, index) =>
+              messages.length - 1 === index ? (
+                <div key={index} ref={lastMessageRef}>
+                  <MessageItem item={item} />
+                </div>
+              ) : (
+                <MessageItem key={index} item={item} />
+              )
+            )}
           </div>
-          <SendMessage />
         </div>
       ) : null}
+      <SendMessage />
     </>
   );
 };

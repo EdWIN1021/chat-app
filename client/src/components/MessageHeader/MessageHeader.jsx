@@ -21,6 +21,7 @@ const MessageHeader = () => {
 
     <Card>
       <CardHeader
+        className="message-header"
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
