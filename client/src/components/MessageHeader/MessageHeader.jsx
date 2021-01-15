@@ -9,15 +9,26 @@ import "./message.header.styles.css";
 const MessageHeader = () => {
   const receiver = useSelector(({ friendReducer }) => friendReducer.receiver);
   return (
-    <Box className="message-header">
-      <Typography className="message-header-title" variant="h4">
-        {receiver.displayName}
-      </Typography>
+    // <Box className="message-header">
+    //   <Typography className="message-header-title" variant="h4">
+    //     {receiver.displayName}
+    //   </Typography>
 
-      <IconButton aria-label="settings">
-        <MoreVertIcon />
-      </IconButton>
-    </Box>
+    //   <IconButton aria-label="settings">
+    //     <MoreVertIcon />
+    //   </IconButton>
+    // </Box>
+
+    <Card>
+      <CardHeader
+        action={
+          <IconButton aria-label="settings">
+            <MoreVertIcon />
+          </IconButton>
+        }
+        title={receiver.displayName}
+      />
+    </Card>
   );
 };
 

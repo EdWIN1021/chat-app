@@ -34,13 +34,12 @@ const FriendItem = ({ friend, setReceiver }) => {
           primary={friend.displayName}
           secondary={
             <Typography component="span" variant="body2" color="textPrimary">
-              hi
+              last message:hi
             </Typography>
           }
         />
-        <Typography variant="body2">{"update"}</Typography>
       </ListItem>
-      <Divider variant="inset" component="li" />
+      <Divider  />
     </>
   );
 };
