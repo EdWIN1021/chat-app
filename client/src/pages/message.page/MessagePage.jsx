@@ -6,8 +6,8 @@ import MessagePanel from "../../components/message.panel/MessagePanel";
 const MessagePage = () => {
   return (
       <Grid container>
-        <ContactPanel />
-        <MessagePanel />
+        {/* <ContactPanel /> */}
+        {/* <MessagePanel /> */}
       </Grid>
   
   );

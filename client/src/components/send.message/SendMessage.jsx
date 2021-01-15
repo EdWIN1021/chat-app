@@ -5,7 +5,7 @@ import { isEmpty } from "../../Validator/validator";
 import { useSelector, useDispatch } from "react-redux";
 import SendIcon from "@material-ui/icons/Send";
 import "./send.message.css";
-import { setUpdateMesaage } from "../../redux/friendReducer/action";
+import { setUpdateMesaage } from "../../redux/reducer/action";
 import firebase from "firebase";
 const SendMessage = () => {
   const receiver = useSelector(({ friendReducer }) => friendReducer.receiver);

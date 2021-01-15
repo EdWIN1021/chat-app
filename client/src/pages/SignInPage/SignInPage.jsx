@@ -21,7 +21,7 @@ const SignInPage = () => {
     password: "",
   });
 
-  const currentUser = useSelector(({ friendReducer }) => friendReducer.user);
+  // const currentUser = useSelector(({ friendReducer }) => friendReducer.user);
   const [error, setError] = useState("");
   const history = useHistory();
 
@@ -34,7 +34,7 @@ const SignInPage = () => {
     auth
       .signInWithEmailAndPassword(input.email, input.password)
       .then((result) => {
-        history.push("/message");
+        // history.push("/message");
       })
       .catch((error) => {
         setError(error.message);

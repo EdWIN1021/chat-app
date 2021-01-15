@@ -1,6 +1,7 @@
 import React from "react";
-import "./header.styles.css";
 import HeaderMenu from "../HeaderMenu/HeaderMenu";
+//css
+import "./header.styles.css";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 
 export const Header = () => {

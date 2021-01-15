@@ -1,4 +1,5 @@
 import Type from "./type";
+
 const INITAIL_STATE = {
   user: null,
   receiver: "",
@@ -7,7 +8,7 @@ const INITAIL_STATE = {
   newTime: "",
 };
 
-const friendReducer = (state = INITAIL_STATE, action) => {
+const reducer = (state = INITAIL_STATE, action) => {
   switch (action.type) {
     case Type.SET_RECEIVER:
       return { ...state, receiver: action.payload };
@@ -27,4 +28,4 @@ const friendReducer = (state = INITAIL_STATE, action) => {
   }
 };
 
-export default friendReducer;
+export default reducer;

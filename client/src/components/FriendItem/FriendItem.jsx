@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import "./friend.item.styles.css";
 import { connect } from "react-redux";
-import { setReceiver } from "../../redux/friendReducer/action";
+import { setReceiver } from "../../redux/reducer/action";
 
 const FriendItem = ({ friend, setReceiver }) => {
   const handleOnClick = () => {
@@ -39,7 +39,7 @@ const FriendItem = ({ friend, setReceiver }) => {
           }
         />
       </ListItem>
-      <Divider  />
+      <Divider />
     </>
   );
 };

@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/reducer/selectors";
 import {
   Button,
   Dialog,
@@ -10,7 +12,8 @@ import {
 } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 
-const ProfileDialog = ({ currentUser }) => {
+const ProfileDialog = () => {
+  const currentUser = useSelector(selectUser);
   const [open, setOpen] = React.useState(false);
 
   return (

@@ -1,11 +1,11 @@
 import React from "react";
-import Alert from "@material-ui/lab/Alert";
-import useStyles from "./ErrorMessage.styles";
+import { Alert, AlertTitle } from "@material-ui/lab";
+import "./ErrorMessage.styles.css";
 const ErrorMessage = ({ error }) => {
-  const classes = useStyles();
   return (
-    <Alert className={classes.error} severity="error">
-      {error}
+    <Alert className="error-message" severity="error">
+      <AlertTitle>Error</AlertTitle>
+      {error} — <strong>check it out!</strong>
     </Alert>
   );
 };

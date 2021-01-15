@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { fireStore } from "../../firebase/config";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/reducer/selectors";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import SuccessMessage from "../SuccessMessage/SuccessMessage";
 import {
   isEmpty,
   isUserExist,
@@ -7,7 +11,7 @@ import {
   isFriend,
   sentRequest,
 } from "../../Validator/validator";
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
+
 import {
   Button,
   Dialog,
@@ -18,31 +22,38 @@ import {
   IconButton,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-const AddFriendDialog = ({ currentUser }) => {
-  const [open, setOpen] = React.useState(false);
+const AddFriendDialog = () => {
+  const currentUser = useSelector(selectUser);
+  const [open, setOpen] = useState(false);
   const [searchId, setSearchId] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
-  const handleOnClick = async (e) => {
+  const handleOnClick = async () => {
     if (isEmpty(searchId)) {
-      return setError("Please enter a ID");
+      setSuccess(null);
+      return setError("Please enter an ID");
     }
 
     if (isYourSelf(currentUser, searchId)) {
+      setSuccess(null);
       return setError("You cannot add yourself");
     }
 
-    // if (!(await isUserExist(searchId))) {
-    //   return setError("User does not exist");
-    // }
+    if (!(await isUserExist(searchId))) {
+      setSuccess(null);
+      return setError("User does not exist");
+    }
 
-    // if (await isFriend(currentUser, searchId)) {
-    //   return setError("This guy is your friend");
-    // }
+    if (await isFriend(currentUser, searchId)) {
+      setSuccess(null);
+      return setError("This guy is your friend");
+    }
 
-    // if (await sentRequest(currentUser, searchId)) {
-    //   return setError("You cannot sent same request to this guy");
-    // }
+    if (await sentRequest(currentUser, searchId)) {
+      setSuccess(null);
+      return setError("You cannot send same request to this guy");
+    }
 
     await fireStore
       .collection("requests")
@@ -54,20 +65,19 @@ const AddFriendDialog = ({ currentUser }) => {
         displayName: currentUser.displayName,
       });
 
-    // await fireStore
-    //   .collection("users")
-    //   .doc(searchId)
-    //   .collection("requests")
-    //   .add({
-    //     id: currentUser.uid,
-    //     displayName: currentUser.displayName,
-    //   });
+    setSuccess("You have sent a request");
+    setError(null);
+    setSearchId("");
+  };
 
-    setError("");
+  const handleOnCancel = () => {
+    setError(null);
+    setSuccess(null);
+    setOpen(false);
   };
-  const handleOnChange = (e) => {
-    setSearchId(e.target.value);
-  };
+
+  const handleOnChange = (e) => setSearchId(e.target.value);
+
   return (
     <>
       <IconButton color="inherit" onClick={() => setOpen(true)}>
@@ -80,8 +90,9 @@ const AddFriendDialog = ({ currentUser }) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Your Friend ID</DialogTitle>
-        {error !== "" ? <ErrorMessage error={error} /> : null}
+        <DialogTitle>Your Friend ID</DialogTitle>
+        {error ? <ErrorMessage error={error} /> : null}
+        {success ? <SuccessMessage success={success} /> : null}
 
         <DialogContent>
           <TextField
@@ -96,8 +107,8 @@ const AddFriendDialog = ({ currentUser }) => {
           <Button onClick={handleOnClick} color="primary" autoFocus>
             ok
           </Button>
-          <Button onClick={() => setOpen(false)} color="primary" autoFocus>
-            Cancle
+          <Button onClick={handleOnCancel} color="primary" autoFocus>
+            Cancel
           </Button>
         </DialogActions>
       </Dialog>

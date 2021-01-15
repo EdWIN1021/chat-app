@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fireStore } from "../../firebase/config";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/reducer/selectors";
 import {
   Button,
   Dialog,
@@ -17,7 +19,8 @@ import {
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import RequestItem from "../RequestItem/RequestItem";
 
-const FriendRequestDialog = ({ currentUser }) => {
+const FriendRequestDialog = () => {
+  const currentUser = useSelector(selectUser);
   const [open, setOpen] = useState(false);
   const [numOfReq, setNumOfReq] = useState(null);
   const [requestList, setRequestList] = useState(null);
@@ -37,13 +40,13 @@ const FriendRequestDialog = ({ currentUser }) => {
       });
   }, []);
 
-  // useEffect(() => {
-  //   fireStore
-  //     .collection("users")
-  //     .doc(currentUser.uid)
-  //     .collection("requests")
-  //     .onSnapshot((snapshot) => setNumOfReq(snapshot.size));
-  // }, []);
+  useEffect(() => {
+    fireStore
+      .collection("requests")
+      .doc("users")
+      .collection(currentUser.uid)
+      .onSnapshot((snapshot) => setNumOfReq(snapshot.size));
+  }, [numOfReq]);
 
   if (requestList) {
     return (

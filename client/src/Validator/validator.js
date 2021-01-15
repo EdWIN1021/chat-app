@@ -19,30 +19,34 @@ export const isUserExist = async (userId) => {
 
 export const isFriend = async (currentUser, searchId) => {
   let found = false;
-  const ref = fireStore
-    .collection("users")
-    .doc(currentUser.uid)
-    .collection("friends");
-  const snapshot = await ref.get();
-  snapshot.forEach((doc) => {
-    if (doc.data().id === searchId) {
-      found = true;
-    }
-  });
+  await fireStore
+    .collection("friends")
+    .doc("users")
+    .collection(currentUser.uid)
+    .where("uid", "==", searchId)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.docs[0] !== undefined) {
+        found = true;
+      }
+    });
+
   return found;
 };
 
 export const sentRequest = async (currentUser, searchId) => {
   let found = false;
-  const ref = fireStore
-    .collection("users")
-    .doc(searchId)
-    .collection("requests");
-  const snapshot = await ref.get();
-  snapshot.forEach((doc) => {
-    if (doc.data().id === currentUser.uid) {
-      found = true;
-    }
-  });
+  await fireStore
+    .collection("requests")
+    .doc("users")
+    .collection(searchId)
+    .where("uid", "==", currentUser.uid)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.docs[0] !== undefined) {
+        found = true;
+      }
+    });
+
   return found;
 };

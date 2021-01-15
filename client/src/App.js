@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { auth } from "./firebase/config";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { useSelector } from "react-redux";
 import Copyright from "./components/Copyright/Copyright";
 import { useDispatch } from "react-redux";
 import { Box } from "@material-ui/core";
@@ -10,9 +9,8 @@ import SignInPage from "./pages/SignInPage/SignInPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import MessagePage from "./pages/message.page/MessagePage";
 import PageNotFound from "./pages/NotFoundPage";
-import { signIn, signOut } from "./redux/friendReducer/action";
+import { signIn, signOut } from "./redux/reducer/action";
 function App() {
-  const currentUser = useSelector(({ friendReducer }) => friendReducer.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -38,27 +36,30 @@ function App() {
         <Route path="/" exact>
           <Redirect to="/signin" />
         </Route>
-        <Route
+
+        <Route exact path="/signin" component={SignInPage} />
+
+        {/* <Route
           exact
           path="/signin"
           render={() =>
             currentUser ? <Redirect to="/message" /> : <SignInPage />
           }
-        />
-        <Route
+        /> */}
+        {/* <Route
           exact
           path="/signup"
           render={() =>
             currentUser ? <Redirect to="/message" /> : <SignUpPage />
           }
-        />
-        <Route
+        /> */}
+        {/* <Route
           exact
           path="/message"
           render={() =>
             currentUser ? <MessagePage /> : <Redirect to="/signin" />
           }
-        />
+        /> */}
         <Route path="*" component={PageNotFound} />
       </Switch>
       <Copyright />
