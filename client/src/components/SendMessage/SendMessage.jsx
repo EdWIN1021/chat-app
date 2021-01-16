@@ -3,13 +3,14 @@ import { TextField, Fab } from "@material-ui/core";
 import { fireStore } from "../../firebase/config";
 import { isEmpty } from "../../Validator/validator";
 import { useSelector, useDispatch } from "react-redux";
+import { selectReceiver, selectUser } from "../../redux/reducer/selectors";
 import SendIcon from "@material-ui/icons/Send";
 import "./send.message.css";
 import { setUpdateMesaage } from "../../redux/reducer/action";
 import firebase from "firebase";
 const SendMessage = () => {
-  const receiver = useSelector(({ friendReducer }) => friendReducer.receiver);
-  const currentUser = useSelector(({ friendReducer }) => friendReducer.user);
+  const receiver = useSelector(selectReceiver);
+  const currentUser = useSelector(selectUser);
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
   const [error, setError] = useState(null);

@@ -11,11 +11,11 @@ const MessagePanel = () => {
   const receiver = useSelector(selectReceiver);
   return (
     <Grid item xs={9}>
-      {receiver !== "" ? (
+      {receiver ? (
         <Box>
           <MessageHeader />
-          {/* <MessageBox /> 
-          <SendMessage />  */}
+          <MessageBox />
+          {/* <SendMessage /> */}
         </Box>
       ) : null}
     </Grid>

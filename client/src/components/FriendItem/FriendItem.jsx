@@ -9,12 +9,13 @@ import {
   Avatar,
 } from "@material-ui/core";
 import "./friend.item.styles.css";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setReceiver } from "../../redux/reducer/action";
 
-const FriendItem = ({ friend, setReceiver }) => {
+const FriendItem = ({ friend }) => {
+  const dispatch = useDispatch();
   const handleOnClick = () => {
-    setReceiver({ uid: friend.uid, displayName: friend.displayName });
+    dispatch(setReceiver({ uid: friend.uid, displayName: friend.displayName }));
   };
 
   return (
@@ -44,8 +45,4 @@ const FriendItem = ({ friend, setReceiver }) => {
   );
 };
 
-const mapDispatchToProp = (dispatch) => ({
-  setReceiver: (userName) => dispatch(setReceiver(userName)),
-});
-
-export default connect(null, mapDispatchToProp)(FriendItem);
+export default FriendItem;

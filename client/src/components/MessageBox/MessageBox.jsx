@@ -2,18 +2,20 @@ import React, { useEffect, useState, useRef } from "react";
 import "./message.styles.css";
 import SendMessage from "../SendMessage/SendMessage";
 import { fireStore } from "../../firebase/config";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import {
+  selectReceiver,
+  selectUser,
+  selectUpdateMessage,
+} from "../../redux/reducer/selectors";
 import MessageItem from "../MessageItem/MessageItem";
 const MessageBox = () => {
-  const receiver = useSelector(({ friendReducer }) => friendReducer.receiver);
-  const currentUser = useSelector(({ friendReducer }) => friendReducer.user);
-  const updateMessage = useSelector(
-    ({ friendReducer }) => friendReducer.updateMessage
-  );
+  const receiver = useSelector(selectReceiver);
+  const currentUser = useSelector(selectUser);
+  const updateMessage = useSelector(selectUpdateMessage);
   const [gotNewMessage, setGotNewMessage] = useState(null);
   const lastMessageRef = useRef(null);
   const [messages, setMessages] = useState([]);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (lastMessageRef.current) {
@@ -60,7 +62,7 @@ const MessageBox = () => {
             {messages.map((item, index) =>
               messages.length - 1 === index ? (
                 <div key={index} ref={lastMessageRef}>
-                  <MessageItem item={item} />
+                  <MessageItem item={item}/>
                 </div>
               ) : (
                 <MessageItem key={index} item={item} />

@@ -2,29 +2,19 @@ import React from "react";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import IconButton from "@material-ui/core/IconButton";
-import { Box, Typography } from "@material-ui/core";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { selectReceiver } from "../../redux/reducer/selectors";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { useSelector } from "react-redux";
 import "./message.header.styles.css";
 const MessageHeader = () => {
-  const receiver = useSelector(({ friendReducer }) => friendReducer.receiver);
+  const receiver = useSelector(selectReceiver);
   return (
-    // <Box className="message-header">
-    //   <Typography className="message-header-title" variant="h4">
-    //     {receiver.displayName}
-    //   </Typography>
-
-    //   <IconButton aria-label="settings">
-    //     <MoreVertIcon />
-    //   </IconButton>
-    // </Box>
-
     <Card>
       <CardHeader
         className="message-header"
         action={
           <IconButton aria-label="settings">
-            <MoreVertIcon />
+            <DeleteIcon />
           </IconButton>
         }
         title={receiver.displayName}

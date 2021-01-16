@@ -15,7 +15,7 @@ const MessagePage = () => {
     return (
       <Grid container>
         <ContactPanel />
-        {/* <MessagePanel /> */}
+        <MessagePanel />
       </Grid>
     );
   }

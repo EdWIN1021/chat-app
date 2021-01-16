@@ -1,10 +1,10 @@
 import React from "react";
 import "./message.item.styles.css";
-import { Message } from "semantic-ui-react";
 import { useSelector } from "react-redux";
-import { SnackbarContent, Box, Avatar } from "@material-ui/core";
+import { selectUser } from "../../redux/reducer/selectors";
+import { Box, Avatar } from "@material-ui/core";
 const MessageItem = ({ item }) => {
-  const currentUser = useSelector(({ friendReducer }) => friendReducer.user);
+  const currentUser = useSelector(selectUser);
   if (currentUser.uid === item.sender) {
     return (
       <Box className="message-right" mb={1}>
