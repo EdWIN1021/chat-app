@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./contact.panel.style.css";
 import { fireStore } from "../../firebase/config";
+import { selectUser } from "../../redux/reducer/selectors";
 import { useSelector } from "react-redux";
 import { Grid, List } from "@material-ui/core";
 import FriendItem from "../FriendItem/FriendItem";
@@ -8,7 +9,8 @@ import FriendItem from "../FriendItem/FriendItem";
 const ContactPanel = () => {
   const [friendList, setFriendList] = useState(null);
   const [fetching, setFetching] = useState(null);
-  const currentUser = useSelector(({ friendReducer }) => friendReducer.user);
+  const [numOfFriends, setNumberOfFriends] = useState(null);
+  const currentUser = useSelector(selectUser);
 
   useEffect(() => {
     if (currentUser) {
@@ -28,11 +30,18 @@ const ContactPanel = () => {
           temp = null;
         });
     }
-  }, [currentUser]);
+  }, [currentUser, numOfFriends]);
 
-  //监听
+  useEffect(() => {
+    fireStore
+      .collection("friends")
+      .doc("users")
+      .collection(currentUser.uid)
+      .onSnapshot((snapshot) => setNumberOfFriends(snapshot.size));
+  }, []);
+
   return (
-    <Grid item xs={3}>
+    <Grid className="contact-panel" item xs={3}>
       <List className="friend-list">
         {fetching === false ? (
           <>

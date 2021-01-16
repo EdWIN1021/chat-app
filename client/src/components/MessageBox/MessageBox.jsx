@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./message.styles.css";
-import SendMessage from "../send.message/SendMessage";
+import SendMessage from "../SendMessage/SendMessage";
 import { fireStore } from "../../firebase/config";
 import { useSelector, useDispatch } from "react-redux";
-import MessageItem from "../message.item/MessageItem";
+import MessageItem from "../MessageItem/MessageItem";
 const MessageBox = () => {
   const receiver = useSelector(({ friendReducer }) => friendReducer.receiver);
   const currentUser = useSelector(({ friendReducer }) => friendReducer.user);

@@ -1,20 +1,21 @@
 import React from "react";
 import "./message.panel.style.css";
-import MessageBox from "../message.box/MessageBox";
-import SendMessage from "../send.message/SendMessage";
+import MessageBox from "../MessageBox/MessageBox";
+import SendMessage from "../SendMessage/SendMessage";
 import { Grid, Box } from "@material-ui/core";
+import { selectReceiver } from "../../redux/reducer/selectors";
 import MessageHeader from "../MessageHeader/MessageHeader";
 import { useSelector } from "react-redux";
 
 const MessagePanel = () => {
-  const receiver = useSelector(({ friendReducer }) => friendReducer.receiver);
+  const receiver = useSelector(selectReceiver);
   return (
     <Grid item xs={9}>
       {receiver !== "" ? (
         <Box>
           <MessageHeader />
-          <MessageBox />
-          {/* <SendMessage /> */}
+          {/* <MessageBox /> 
+          <SendMessage />  */}
         </Box>
       ) : null}
     </Grid>

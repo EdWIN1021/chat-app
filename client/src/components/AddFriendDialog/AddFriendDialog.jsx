@@ -86,7 +86,7 @@ const AddFriendDialog = () => {
       <Dialog
         open={open}
         fullWidth
-        onClose={() => setOpen(false)}
+        onClose={handleOnCancel}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >

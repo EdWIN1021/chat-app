@@ -38,7 +38,7 @@ const FriendRequestDialog = () => {
         setRequestList(temp);
         temp = null;
       });
-  }, []);
+  }, [numOfReq]);
 
   useEffect(() => {
     fireStore

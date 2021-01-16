@@ -2,7 +2,7 @@ import Type from "./type";
 
 const INITAIL_STATE = {
   user: null,
-  receiver: "",
+  receiver: null,
   messages: [],
   updateMessage: null,
   newTime: "",
