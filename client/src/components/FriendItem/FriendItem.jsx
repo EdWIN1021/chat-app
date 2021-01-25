@@ -31,14 +31,7 @@ const FriendItem = ({ friend }) => {
             src="/static/images/avatar/1.jpg"
           />
         </ListItemAvatar>
-        <ListItemText
-          primary={friend.displayName}
-          secondary={
-            <Typography component="span" variant="body2" color="textPrimary">
-              last message:hi
-            </Typography>
-          }
-        />
+        <ListItemText primary={friend.displayName} />
       </ListItem>
       <Divider />
     </>
