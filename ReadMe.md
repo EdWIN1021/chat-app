@@ -4,7 +4,7 @@
 ## login
 ![捕获5](https://user-images.githubusercontent.com/17692914/110072554-ebe46380-7db8-11eb-8992-85438430715e.PNG)
 
-## send add friend request
+## request list
 ![捕获4](https://user-images.githubusercontent.com/17692914/110072588-fbfc4300-7db8-11eb-99b6-52121334446a.PNG)
 
 ## notification
