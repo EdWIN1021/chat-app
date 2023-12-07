@@ -1,0 +1,32 @@
+:root {
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+
+html,
+body,
+#root {
+}
+
+img,
+input {
+  display: block;
+}
+
+li {
+  list-style-type: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
