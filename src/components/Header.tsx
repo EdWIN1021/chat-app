@@ -11,14 +11,15 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import FriendRequestDialog from "./FriendRequestDialog";
 import ProfileDialog from "./ProfileDialog";
+import { useSignOut } from "react-firebase-hooks/auth";
+import { auth } from "../lib/firebase";
 
 function Header() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
-
+  const [signOut] = useSignOut(auth);
   const [open, setOpen] = React.useState(false);
-
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -29,6 +30,11 @@ function Header() {
 
   const handleCheckID = () => {
     setOpen(true);
+    handleCloseUserMenu();
+  };
+
+  const handleLogOut = async () => {
+    await signOut();
     handleCloseUserMenu();
   };
 
@@ -68,7 +74,7 @@ function Header() {
                   <Typography textAlign="center">Check ID</Typography>
                 </MenuItem>
 
-                <MenuItem onClick={handleCloseUserMenu}>
+                <MenuItem onClick={handleLogOut}>
                   <Typography textAlign="center">Logout</Typography>
                 </MenuItem>
               </Menu>

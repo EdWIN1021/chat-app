@@ -11,16 +11,23 @@ import "./index.css";
 import Root from "./pages/Root";
 import SignIn from "./pages/SignIn";
 import Chat from "./pages/Chat";
+import AuthProvider from "./contexts/AuthContext";
+import Auth from "./pages/Auth";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />}>
       <Route index element={<SignIn />} />
-      <Route path="chat" element={<Chat />} />
+
+      <Route element={<Auth />}>
+        <Route path="/chat" element={<Chat />} />
+      </Route>
     </Route>
   )
 );
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <RouterProvider router={router} />
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>
 );
