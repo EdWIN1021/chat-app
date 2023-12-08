@@ -3,9 +3,11 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import FriendItem from "./FriendItem";
 import AddFriendDialog from "./AddFriendDialog";
 import { useState } from "react";
+import useFriends from "../hooks/useFriends";
 
 const ContactPanel = () => {
   const [open, setOpen] = useState(false);
+  const { friends, isLoading } = useFriends();
 
   return (
     <Grid item xs={3} borderRight={1} borderColor={"#F1F1F1"}>
@@ -32,20 +34,22 @@ const ContactPanel = () => {
         </IconButton>
       </Stack>
 
-      <List
-        sx={{
-          maxHeight: "calc(100vh - 64px - 84px)",
-          overflow: "auto",
-          "& ul": { padding: 0 },
-        }}
-        subheader={<li />}
-      >
-        <FriendItem />
-        <FriendItem />
-        <FriendItem />
-        <FriendItem />
-        <FriendItem />
-      </List>
+      {isLoading ? (
+        <div>loading...</div>
+      ) : (
+        <List
+          sx={{
+            maxHeight: "calc(100vh - 64px - 84px)",
+            overflow: "auto",
+            "& ul": { padding: 0 },
+          }}
+          subheader={<li />}
+        >
+          {friends.map((friend) => (
+            <FriendItem key={friend.userId} friend={friend} />
+          ))}
+        </List>
+      )}
     </Grid>
   );
 };

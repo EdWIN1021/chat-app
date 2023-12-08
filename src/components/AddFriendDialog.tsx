@@ -6,18 +6,18 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import { Dispatch, SetStateAction, useState } from "react";
-import { auth, getUserProfile, sendFriendRequest } from "../lib/firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
+import { getUserProfile, sendFriendRequest } from "../lib/firebase";
 import { Profile } from "../types";
+import { AuthContext } from "../contexts/AuthContext";
 
 const AddFriendDialog: React.FC<{
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }> = ({ open, setOpen }) => {
   const [receiverId, setReceiverId] = useState("");
-  const [user] = useAuthState(auth);
   const [error, setError] = useState("");
+  const { user } = useContext(AuthContext);
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -37,6 +37,7 @@ const AddFriendDialog: React.FC<{
     }
 
     setReceiverId("");
+    setOpen(false);
   };
 
   // todo

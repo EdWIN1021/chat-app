@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { User, getAuth } from "firebase/auth";
 import {
+  arrayRemove,
   arrayUnion,
   collection,
   doc,
@@ -14,6 +15,8 @@ import {
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { Profile } from "../types";
+
+import { v4 as uuidv4 } from "uuid";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -52,6 +55,28 @@ export const sendFriendRequest = async (
   senderId: string
 ) => {
   await updateDoc(doc(db, "users", receiverId), {
+    requests: arrayUnion(senderId),
+  });
+};
+
+export const addFriend = async (userId: string, senderId: string) => {
+  const chatId = uuidv4();
+
+  await updateDoc(doc(db, "users", userId), {
+    friends: arrayUnion({ userId: senderId, chatId }),
+  });
+
+  await updateDoc(doc(db, "users", senderId), {
+    friends: arrayUnion({ userId, chatId }),
+  });
+
+  await updateDoc(doc(db, "users", userId), {
+    requests: arrayRemove(senderId),
+  });
+};
+
+export const deleteRequest = async (userId: string, senderId: string) => {
+  await updateDoc(doc(db, "users", userId), {
     requests: arrayUnion(senderId),
   });
 };

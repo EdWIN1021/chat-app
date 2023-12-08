@@ -7,10 +7,21 @@ import {
 } from "@mui/material";
 
 import { Profile } from "../types";
+import { User } from "firebase/auth";
+import { addFriend, deleteRequest } from "../lib/firebase";
 
-const RequestItem: React.FC<{ requestedUser: Profile }> = ({
-  requestedUser,
-}) => {
+const RequestItem: React.FC<{
+  user: User | undefined | null;
+  requestedUser: Profile;
+}> = ({ requestedUser, user }) => {
+  const handleAccept = async () => {
+    if (user) await addFriend(user?.uid, requestedUser.userId);
+  };
+
+  const handleDelete = async () => {
+    if (user) await deleteRequest(user?.uid, requestedUser.userId);
+  };
+
   return (
     <>
       <ListItem>
@@ -21,8 +32,12 @@ const RequestItem: React.FC<{ requestedUser: Profile }> = ({
           />
         </ListItemIcon>
         <ListItemText primary={requestedUser?.displayName} />
-        <Button color="primary">accept</Button>
-        <Button color="primary">delete</Button>
+        <Button color="primary" onClick={handleAccept}>
+          accept
+        </Button>
+        <Button color="primary" onClick={handleDelete}>
+          delete
+        </Button>
       </ListItem>
     </>
   );

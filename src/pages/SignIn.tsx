@@ -1,6 +1,5 @@
 import { Button, Container, Stack, Typography } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { useAuthState } from "react-firebase-hooks/auth";
 
 import {
   signInWithPopup,
@@ -10,9 +9,11 @@ import {
 } from "firebase/auth";
 import { auth, getUserProfile, initUserProfile } from "../lib/firebase";
 import { Navigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 const SignIn = () => {
-  const [user, loading] = useAuthState(auth);
+  const { user, loading } = useContext(AuthContext);
 
   const handleSignIn = async (signIn: () => Promise<UserCredential>) => {
     try {

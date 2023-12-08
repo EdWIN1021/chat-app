@@ -4,3 +4,8 @@ export interface Profile {
   requests: string[];
   userId: string;
 }
+
+export interface Friend {
+  userId: string;
+  chatId: string;
+}

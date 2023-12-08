@@ -1,44 +1,25 @@
-import {
-  ReactNode,
-  createContext,
-  FC,
-  useEffect,
-  useState,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import { ReactNode, createContext, FC } from "react";
 
 import { User } from "firebase/auth";
-
 import { auth } from "../lib/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 interface AuthContextProps {
-  setCurrentUser: Dispatch<SetStateAction<User | null>>;
-  currentUser: User | null;
+  user: User | null | undefined;
+  loading: boolean;
 }
 
 export const AuthContext = createContext<AuthContextProps>({
-  setCurrentUser: () => {},
-  currentUser: null,
+  user: null,
+  loading: false,
 });
 
 const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setCurrentUser(user);
-      } else {
-        setCurrentUser(null);
-      }
-    });
-    return () => unsubscribe();
-  }, []);
+  const [user, loading] = useAuthState(auth);
 
   const contextValue: AuthContextProps = {
-    currentUser,
-    setCurrentUser,
+    user,
+    loading,
   };
 
   return (

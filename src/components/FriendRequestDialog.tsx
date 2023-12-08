@@ -8,23 +8,24 @@ import {
   IconButton,
   List,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import RequestItem from "./RequestItem";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, getRequestUserInfo, getUserProfile } from "../lib/firebase";
+import { getRequestUserInfo, getUserProfile } from "../lib/firebase";
 import { Profile } from "../types";
+import { AuthContext } from "../contexts/AuthContext";
 
 const FriendRequestDialog = () => {
   const [open, setOpen] = useState(false);
-  const [user] = useAuthState(auth);
   const [requestList, setRequestList] = useState<Profile[]>([]);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const getRequestList = async () => {
       if (user) {
         const profile = (await getUserProfile(user?.uid)) as Profile;
-        setRequestList(await getRequestUserInfo(profile?.requests));
+        profile?.requests?.length > 0 &&
+          setRequestList(await getRequestUserInfo(profile?.requests));
       }
     };
 
@@ -54,7 +55,7 @@ const FriendRequestDialog = () => {
             {requestList.map((requestedUser) => (
               <RequestItem
                 key={requestedUser.userId}
-                // currentUser={user}
+                user={user}
                 requestedUser={requestedUser}
               />
             ))}

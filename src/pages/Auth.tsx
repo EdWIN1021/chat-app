@@ -1,9 +1,9 @@
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../lib/firebase";
 import { Navigate, Outlet } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Auth = () => {
-  const [user, loading] = useAuthState(auth);
+  const { user, loading } = useContext(AuthContext);
 
   return (
     <>

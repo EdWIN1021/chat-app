@@ -1,4 +1,3 @@
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,16 +12,15 @@ import FriendRequestDialog from "./FriendRequestDialog";
 import ProfileDialog from "./ProfileDialog";
 import { useSignOut } from "react-firebase-hooks/auth";
 import { auth } from "../lib/firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { AuthContext } from "../contexts/AuthContext";
+import { useContext, useState } from "react";
 
 function Header() {
-  const [user] = useAuthState(auth);
+  const { user } = useContext(AuthContext);
 
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [signOut] = useSignOut(auth);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
