@@ -11,9 +11,10 @@ import {
 import { useContext, useEffect, useState } from "react";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import RequestItem from "./RequestItem";
-import { getRequestUserInfo, getUserProfile } from "../lib/firebase";
+import { db, getRequestUserInfo, getUserProfile } from "../lib/firebase";
 import { Profile } from "../types";
 import { AuthContext } from "../contexts/AuthContext";
+import { Unsubscribe, doc, onSnapshot } from "firebase/firestore";
 
 const FriendRequestDialog = () => {
   const [open, setOpen] = useState(false);
@@ -21,16 +22,26 @@ const FriendRequestDialog = () => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    const getRequestList = async () => {
+    let unsubscribe: Unsubscribe | undefined;
+    (async () => {
       if (user) {
-        const profile = (await getUserProfile(user?.uid)) as Profile;
-        profile?.requests?.length > 0 &&
-          setRequestList(await getRequestUserInfo(profile?.requests));
+        unsubscribe = onSnapshot(doc(db, "users", user?.uid), async () => {
+          const profile = (await getUserProfile(user?.uid)) as Profile;
+          profile?.requests?.length > 0
+            ? setRequestList(await getRequestUserInfo(profile?.requests))
+            : setRequestList([]);
+        });
+      }
+    })();
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
       }
     };
-
-    getRequestList();
   }, [user]);
+
+  console.log(requestList);
 
   return (
     <>

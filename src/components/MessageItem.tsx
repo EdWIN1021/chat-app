@@ -20,11 +20,12 @@ const MessageItem: React.FC<{ message: Message }> = ({ message }) => {
           <Typography
             variant="body2"
             sx={{
-              backgroundColor: "#F1F1F1",
+              backgroundColor: "rgb(25, 118, 210)",
               borderRadius: "12px",
               paddingX: 2,
               paddingY: 1,
             }}
+            color={"white"}
           >
             {message.content}
           </Typography>

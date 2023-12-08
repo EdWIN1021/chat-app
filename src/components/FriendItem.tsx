@@ -5,11 +5,11 @@ import {
   ListItemButton,
   ListItemText,
 } from "@mui/material";
-import { Profile } from "../types";
+import { Friend } from "../types";
 import { useContext } from "react";
 import { ChatContext } from "../contexts/ChatContext";
 
-const FriendItem: React.FC<{ friend: Profile }> = ({ friend }) => {
+const FriendItem: React.FC<{ friend: Friend }> = ({ friend }) => {
   const { updateChatId, updateReceiver } = useContext(ChatContext);
 
   const handleClick = () => {

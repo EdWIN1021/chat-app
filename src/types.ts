@@ -4,6 +4,7 @@ export interface Profile {
   requests: string[];
   userId: string;
   chatId: string;
+  friends: Friend[];
 }
 
 export interface Friend {
