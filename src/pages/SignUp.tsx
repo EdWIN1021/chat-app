@@ -3,7 +3,7 @@ import { Button, Container, Stack, TextField, Typography } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Link } from "react-router-dom";
 
-const SignUpPage = () => {
+const SignUp = () => {
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -87,4 +87,4 @@ const SignUpPage = () => {
 };
 // };
 
-export default SignUpPage;
+export default SignUp;

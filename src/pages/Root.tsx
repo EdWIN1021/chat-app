@@ -1,12 +1,20 @@
 import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
+import { Box } from "@mui/material";
 
 const Root = () => {
   return (
-    <div>
+    <Box
+      sx={{
+        height: "100vh",
+        display: "flex",
+        overflow: "hidden",
+        flexDirection: "column",
+      }}
+    >
       <Header />
       <Outlet />
-    </div>
+    </Box>
   );
 };
 

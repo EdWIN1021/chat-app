@@ -9,14 +9,16 @@ import {
 
 import "./index.css";
 import Root from "./pages/Root";
-import SignInPage from "./pages/SignIn";
-import SignUpPage from "./pages/SignUp";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import Chat from "./pages/Chat";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />}>
-      <Route index element={<SignInPage />} />
-      <Route path="signup" element={<SignUpPage />} />
+      <Route index element={<SignIn />} />
+      <Route path="signup" element={<SignUp />} />
+      <Route path="chat" element={<Chat />} />
     </Route>
   )
 );
