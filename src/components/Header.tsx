@@ -9,7 +9,6 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { Link } from "react-router-dom";
 import FriendRequestDialog from "./FriendRequestDialog";
 import ProfileDialog from "./ProfileDialog";
 
@@ -65,18 +64,6 @@ function Header() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">
-                    <Link to="/">Login</Link>
-                  </Typography>
-                </MenuItem>
-
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">
-                    <Link to="/signup">Signup</Link>
-                  </Typography>
-                </MenuItem>
-
                 <MenuItem onClick={handleCheckID}>
                   <Typography textAlign="center">Check ID</Typography>
                 </MenuItem>
