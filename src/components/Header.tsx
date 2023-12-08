@@ -10,11 +10,15 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
+import FriendRequestDialog from "./FriendRequestDialog";
+import ProfileDialog from "./ProfileDialog";
 
 function Header() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+
+  const [open, setOpen] = React.useState(false);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -24,56 +28,69 @@ function Header() {
     setAnchorElUser(null);
   };
 
+  const handleCheckID = () => {
+    setOpen(true);
+    handleCloseUserMenu();
+  };
+
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
-            Chat
-          </Typography>
+    <>
+      <AppBar position="static">
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
+              Chat
+            </Typography>
 
-          <Box>
-            <Tooltip title="Open Menu">
-              <IconButton onClick={handleOpenUserMenu}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
+            <Box>
+              <FriendRequestDialog />
+              <Tooltip title="Open Menu">
+                <IconButton onClick={handleOpenUserMenu}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
 
-            <Menu
-              sx={{ mt: "45px" }}
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">
-                  <Link to="/">login</Link>
-                </Typography>
-              </MenuItem>
+              <Menu
+                sx={{ mt: "45px" }}
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">
+                    <Link to="/">Login</Link>
+                  </Typography>
+                </MenuItem>
 
-              <MenuItem onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">
-                  <Link to="/signup">signup</Link>
-                </Typography>
-              </MenuItem>
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">
+                    <Link to="/signup">Signup</Link>
+                  </Typography>
+                </MenuItem>
 
-              <MenuItem onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">logout</Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+                <MenuItem onClick={handleCheckID}>
+                  <Typography textAlign="center">Check ID</Typography>
+                </MenuItem>
+
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+      <ProfileDialog open={open} setOpen={setOpen} />
+    </>
   );
 }
 export default Header;

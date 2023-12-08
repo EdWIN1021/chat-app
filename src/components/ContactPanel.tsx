@@ -1,17 +1,22 @@
-import { Grid, List, Stack, Typography } from "@mui/material";
+import { Grid, IconButton, List, Stack, Typography } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import FriendItem from "./FriendItem";
+import AddFriendDialog from "./AddFriendDialog";
+import { useState } from "react";
 
 const ContactPanel = () => {
+  const [open, setOpen] = useState(false);
+
   return (
     <Grid item xs={3} borderRight={1} borderColor={"#F1F1F1"}>
+      <AddFriendDialog open={open} setOpen={setOpen} />
       <Stack
         direction={"row"}
         justifyContent={"space-around"}
         alignItems={"center"}
         borderBottom={1}
         borderColor={"#F1F1F1"}
-        padding={3}
+        padding={2}
       >
         <Typography
           textAlign={"center"}
@@ -22,11 +27,9 @@ const ContactPanel = () => {
           Messages
         </Typography>
 
-        <AddCircleIcon
-          fontSize="large"
-          color="primary"
-          sx={{ cursor: "pointer" }}
-        />
+        <IconButton onClick={() => setOpen(true)}>
+          <AddCircleIcon fontSize="large" color="primary" />
+        </IconButton>
       </Stack>
 
       <List
