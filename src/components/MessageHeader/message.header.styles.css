@@ -1,8 +1,0 @@
-.message-header {
-  display: flex;
-  align-items: center;
-}
-
-.message-header-title {
-  flex-grow: 1;
-}
