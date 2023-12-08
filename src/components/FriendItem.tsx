@@ -9,7 +9,7 @@ import { Profile } from "../types";
 
 const FriendItem: React.FC<{ friend: Profile }> = ({ friend }) => {
   const handleClick = () => {
-    console.log("asd");
+    console.log(friend);
   };
 
   return (

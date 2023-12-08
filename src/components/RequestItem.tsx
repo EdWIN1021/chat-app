@@ -15,7 +15,7 @@ const RequestItem: React.FC<{
   requestedUser: Profile;
 }> = ({ requestedUser, user }) => {
   const handleAccept = async () => {
-    if (user) await addFriend(user?.uid, requestedUser.userId);
+    if (user) await addFriend(user, requestedUser);
   };
 
   const handleDelete = async () => {

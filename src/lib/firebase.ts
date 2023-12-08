@@ -59,19 +59,29 @@ export const sendFriendRequest = async (
   });
 };
 
-export const addFriend = async (userId: string, senderId: string) => {
+export const addFriend = async (user: User, sender: Profile) => {
   const chatId = uuidv4();
 
-  await updateDoc(doc(db, "users", userId), {
-    friends: arrayUnion({ userId: senderId, chatId }),
+  await updateDoc(doc(db, "users", user.uid), {
+    friends: arrayUnion({
+      userId: sender.userId,
+      displayName: sender.displayName,
+      photoURL: sender.photoURL,
+      chatId,
+    }),
   });
 
-  await updateDoc(doc(db, "users", senderId), {
-    friends: arrayUnion({ userId, chatId }),
+  await updateDoc(doc(db, "users", sender.userId), {
+    friends: arrayUnion({
+      userId: user.uid,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      chatId,
+    }),
   });
 
-  await updateDoc(doc(db, "users", userId), {
-    requests: arrayRemove(senderId),
+  await updateDoc(doc(db, "users", user.uid), {
+    requests: arrayRemove(sender.userId),
   });
 };
 
