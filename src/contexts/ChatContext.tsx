@@ -32,7 +32,7 @@ interface ChatContextProps {
   receiver: Friend | null;
   messages: Message[];
   updateChatId: (chatId: string) => void;
-  updateReceiver: (receiver: Friend) => void;
+  updateReceiver: (receiver: Friend | null) => void;
   sendMessage: (content: string) => void;
 }
 
@@ -79,7 +79,7 @@ const ChatProvider: FC<{ children: ReactNode }> = ({ children }) => {
   }, [chatId]);
 
   const updateChatId = (chatId: string) => setChatId(chatId);
-  const updateReceiver = (receiver: Friend) => setReceiver(receiver);
+  const updateReceiver = (receiver: Friend | null) => setReceiver(receiver);
   const sendMessage = async (content: string) => {
     await updateDoc(doc(db, "chats", chatId), {
       messages: arrayUnion({

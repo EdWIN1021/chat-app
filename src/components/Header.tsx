@@ -14,9 +14,11 @@ import { useSignOut } from "react-firebase-hooks/auth";
 import { auth } from "../lib/firebase";
 import { AuthContext } from "../contexts/AuthContext";
 import { useContext, useState } from "react";
+import { ChatContext } from "../contexts/ChatContext";
 
 function Header() {
   const { user } = useContext(AuthContext);
+  const { updateReceiver } = useContext(ChatContext);
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [signOut] = useSignOut(auth);
@@ -37,6 +39,7 @@ function Header() {
   const handleLogOut = async () => {
     await signOut();
     handleCloseUserMenu();
+    updateReceiver(null);
   };
 
   return (
