@@ -6,12 +6,14 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
+import { User } from "firebase/auth";
 import React, { Dispatch, SetStateAction } from "react";
 
 const ProfileDialog: React.FC<{
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-}> = ({ open, setOpen }) => {
+  user: User | undefined | null;
+}> = ({ open, setOpen, user }) => {
   return (
     <>
       <Dialog
@@ -20,10 +22,12 @@ const ProfileDialog: React.FC<{
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Hello, Edwin</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          Hello, {user?.displayName}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            ID:123
+            ID: {user?.uid}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

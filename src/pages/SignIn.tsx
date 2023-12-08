@@ -8,7 +8,7 @@ import {
   GithubAuthProvider,
   UserCredential,
 } from "firebase/auth";
-import { auth } from "../lib/firebase";
+import { auth, getUserProfile, initUserProfile } from "../lib/firebase";
 import { Navigate } from "react-router-dom";
 
 const SignIn = () => {
@@ -16,7 +16,9 @@ const SignIn = () => {
 
   const handleSignIn = async (signIn: () => Promise<UserCredential>) => {
     try {
-      await signIn();
+      const { user } = await signIn();
+      const profile = await getUserProfile(user?.uid);
+      if (!profile) await initUserProfile(user);
     } catch (error) {
       console.log(error);
     }

@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { User, getAuth } from "firebase/auth";
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
@@ -16,3 +16,21 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
+
+export const initUserProfile = async (user: User) => {
+  await setDoc(doc(db, "users", user?.uid), {
+    displayName: user.displayName,
+    photoURL: user.photoURL,
+    userId: user?.uid,
+  });
+};
+
+export const getUserProfile = async (id: string) => {
+  const userSnap = await getDoc(doc(db, "users", id));
+
+  if (userSnap.exists()) {
+    return userSnap.data();
+  }
+
+  return null;
+};

@@ -13,8 +13,11 @@ import FriendRequestDialog from "./FriendRequestDialog";
 import ProfileDialog from "./ProfileDialog";
 import { useSignOut } from "react-firebase-hooks/auth";
 import { auth } from "../lib/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 function Header() {
+  const [user] = useAuthState(auth);
+
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -47,42 +50,46 @@ function Header() {
               Chat
             </Typography>
 
-            <Box>
-              <FriendRequestDialog />
-              <Tooltip title="Open Menu">
-                <IconButton onClick={handleOpenUserMenu}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
+            {user && (
+              <Box>
+                <FriendRequestDialog />
+                <Tooltip title="Open Menu">
+                  <IconButton onClick={handleOpenUserMenu}>
+                    <Avatar
+                      src={user?.photoURL || "/static/images/avatar/2.jpg"}
+                    />
+                  </IconButton>
+                </Tooltip>
 
-              <Menu
-                sx={{ mt: "45px" }}
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                <MenuItem onClick={handleCheckID}>
-                  <Typography textAlign="center">Check ID</Typography>
-                </MenuItem>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem onClick={handleCheckID}>
+                    <Typography textAlign="center">Check ID</Typography>
+                  </MenuItem>
 
-                <MenuItem onClick={handleLogOut}>
-                  <Typography textAlign="center">Logout</Typography>
-                </MenuItem>
-              </Menu>
-            </Box>
+                  <MenuItem onClick={handleLogOut}>
+                    <Typography textAlign="center">Logout</Typography>
+                  </MenuItem>
+                </Menu>
+              </Box>
+            )}
           </Toolbar>
         </Container>
       </AppBar>
-      <ProfileDialog open={open} setOpen={setOpen} />
+      <ProfileDialog open={open} setOpen={setOpen} user={user} />
     </>
   );
 }

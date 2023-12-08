@@ -8,7 +8,7 @@ const Auth = () => {
   return (
     <>
       {loading ? (
-        <div>loading</div>
+        <div>loading...</div>
       ) : (
         <>{user ? <Outlet /> : <Navigate to="/" />}</>
       )}
