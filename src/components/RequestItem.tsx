@@ -6,14 +6,21 @@ import {
   ListItemText,
 } from "@mui/material";
 
-const RequestItem = () => {
+import { Profile } from "../types";
+
+const RequestItem: React.FC<{ requestedUser: Profile }> = ({
+  requestedUser,
+}) => {
   return (
     <>
       <ListItem>
         <ListItemIcon>
-          <Avatar src="/static/images/avatar/1.jpg" variant="rounded" />
+          <Avatar
+            src={requestedUser?.photoURL || "/static/images/avatar/1.jpg"}
+            variant="rounded"
+          />
         </ListItemIcon>
-        <ListItemText primary="Single-line item" />
+        <ListItemText primary={requestedUser?.displayName} />
         <Button color="primary">accept</Button>
         <Button color="primary">delete</Button>
       </ListItem>

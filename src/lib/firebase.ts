@@ -1,7 +1,19 @@
 import { initializeApp } from "firebase/app";
 import { User, getAuth } from "firebase/auth";
-import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import {
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { Profile } from "../types";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -33,4 +45,21 @@ export const getUserProfile = async (id: string) => {
   }
 
   return null;
+};
+
+export const sendFriendRequest = async (
+  receiverId: string,
+  senderId: string
+) => {
+  await updateDoc(doc(db, "users", receiverId), {
+    requests: arrayUnion(senderId),
+  });
+};
+
+export const getRequestUserInfo = async (requests: string[]) => {
+  const data = [] as Profile[];
+  const q = query(collection(db, "users"), where("userId", "in", requests));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => data.push(doc.data() as Profile));
+  return data;
 };
