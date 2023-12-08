@@ -45,7 +45,7 @@ const ContactPanel = () => {
           }}
           subheader={<li />}
         >
-          {friends.map((friend) => (
+          {friends?.map((friend) => (
             <FriendItem key={friend.userId} friend={friend} />
           ))}
         </List>

@@ -6,10 +6,15 @@ import {
   ListItemText,
 } from "@mui/material";
 import { Profile } from "../types";
+import { useContext } from "react";
+import { ChatContext } from "../contexts/ChatContext";
 
 const FriendItem: React.FC<{ friend: Profile }> = ({ friend }) => {
+  const { updateChatId, updateReceiver } = useContext(ChatContext);
+
   const handleClick = () => {
-    console.log(friend);
+    updateChatId(friend?.chatId);
+    updateReceiver(friend);
   };
 
   return (

@@ -83,6 +83,10 @@ export const addFriend = async (user: User, sender: Profile) => {
   await updateDoc(doc(db, "users", user.uid), {
     requests: arrayRemove(sender.userId),
   });
+
+  await setDoc(doc(db, "chats", chatId), {
+    messages: [],
+  });
 };
 
 export const deleteRequest = async (userId: string, senderId: string) => {

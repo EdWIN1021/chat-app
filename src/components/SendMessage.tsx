@@ -1,7 +1,18 @@
-import { Fab, TextField } from "@mui/material";
+import { IconButton, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import { useContext, useState } from "react";
+import { ChatContext } from "../contexts/ChatContext";
 
 const SendMessage = () => {
+  const { sendMessage } = useContext(ChatContext);
+  const [content, setContent] = useState("");
+
+  const handleSubmit = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    await sendMessage(content);
+    setContent("");
+  };
+
   return (
     <form
       style={{
@@ -10,16 +21,21 @@ const SendMessage = () => {
         padding: "2% 4%",
         alignItems: "center",
       }}
+      onSubmit={handleSubmit}
     >
       <TextField
         color="primary"
         size="small"
-        fullWidth
+        value={content}
         placeholder="Type a message"
+        onChange={(e) => setContent(e.target.value)}
+        fullWidth
+        required
       />
-      <Fab color="primary" type="submit" aria-label="add" size={"small"}>
+
+      <IconButton color="primary" type="submit" size={"small"}>
         <SendIcon />
-      </Fab>
+      </IconButton>
     </form>
   );
 };
