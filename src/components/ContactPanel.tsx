@@ -7,7 +7,7 @@ import useFriends from "../hooks/useFriends";
 
 const ContactPanel = () => {
   const [open, setOpen] = useState(false);
-  const { friends, isLoading } = useFriends();
+  const { friends } = useFriends();
 
   return (
     <Grid item xs={3} borderRight={1} borderColor={"#F1F1F1"}>
@@ -34,22 +34,18 @@ const ContactPanel = () => {
         </IconButton>
       </Stack>
 
-      {isLoading ? (
-        <div>loading...</div>
-      ) : (
-        <List
-          sx={{
-            maxHeight: "calc(100vh - 64px - 84px)",
-            overflow: "auto",
-            "& ul": { padding: 0 },
-          }}
-          subheader={<li />}
-        >
-          {friends?.map((friend) => (
-            <FriendItem key={friend.userId} friend={friend} />
-          ))}
-        </List>
-      )}
+      <List
+        sx={{
+          maxHeight: "calc(100vh - 64px - 84px)",
+          overflow: "auto",
+          "& ul": { padding: 0 },
+        }}
+        subheader={<li />}
+      >
+        {friends?.map((friend) => (
+          <FriendItem key={friend.userId} friend={friend} />
+        ))}
+      </List>
     </Grid>
   );
 };

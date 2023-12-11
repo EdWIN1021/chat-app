@@ -1,4 +1,11 @@
-import { Button, Container, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Stack,
+  Typography,
+} from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import {
@@ -32,7 +39,16 @@ const SignIn = () => {
   return (
     <>
       {loading ? (
-        <div>loading...</div>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <CircularProgress />
+        </Box>
       ) : (
         <>
           {user ? (
