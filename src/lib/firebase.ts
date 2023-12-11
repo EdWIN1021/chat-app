@@ -42,11 +42,9 @@ export const initUserProfile = async (user: User) => {
 
 export const getUserProfile = async (id: string) => {
   const userSnap = await getDoc(doc(db, "users", id));
-
   if (userSnap.exists()) {
     return userSnap.data();
   }
-
   return null;
 };
 

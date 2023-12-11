@@ -8,19 +8,28 @@ import {
 import { Friend, Profile } from "../types";
 import { useContext, useEffect, useState } from "react";
 import { ChatContext } from "../contexts/ChatContext";
-import { getUserProfile } from "../lib/firebase";
+import { db, getUserProfile } from "../lib/firebase";
+import { Unsubscribe } from "firebase/auth";
+import { doc, onSnapshot } from "firebase/firestore";
 
 const FriendItem: React.FC<{ friend: Friend }> = ({ friend }) => {
   const { updateChatId, updateReceiver } = useContext(ChatContext);
   const [profile, setProfile] = useState<Profile | null>(null);
 
   useEffect(() => {
+    let unsubscribe: Unsubscribe | undefined;
     (async () => {
       if (friend) {
-        const profile = (await getUserProfile(friend.userId)) as Profile;
-        setProfile(profile);
+        unsubscribe = onSnapshot(doc(db, "users", friend.userId), async () => {
+          setProfile((await getUserProfile(friend.userId)) as Profile);
+        });
       }
     })();
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
   }, [friend]);
 
   const handleClick = () => {
@@ -42,6 +51,9 @@ const FriendItem: React.FC<{ friend: Friend }> = ({ friend }) => {
           <ListItemText
             primary={friend?.displayName}
             secondary={profile?.online ? "online" : "offline"}
+            secondaryTypographyProps={{
+              color: profile?.online ? "green" : "red",
+            }}
           />
         </ListItemButton>
       </ListItem>

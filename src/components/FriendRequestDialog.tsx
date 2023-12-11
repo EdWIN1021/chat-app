@@ -41,8 +41,6 @@ const FriendRequestDialog = () => {
     };
   }, [user]);
 
-  console.log(requestList);
-
   return (
     <>
       <IconButton color="inherit" onClick={() => setOpen(true)}>
