@@ -32,6 +32,7 @@ const MessageItem: React.FC<{ message: Message }> = ({ message }) => {
           <Avatar
             sx={{ width: 30, height: 30 }}
             src={user?.photoURL || "/static/images/avatar/1.jpg"}
+            imgProps={{ referrerPolicy: "no-referrer" }}
             variant="rounded"
           />
         </Stack>
@@ -40,6 +41,7 @@ const MessageItem: React.FC<{ message: Message }> = ({ message }) => {
           <Avatar
             sx={{ width: 30, height: 30 }}
             src={receiver?.photoURL || "/static/images/avatar/1.jpg"}
+            imgProps={{ referrerPolicy: "no-referrer" }}
             variant="rounded"
           />
           <Typography

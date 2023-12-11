@@ -7,10 +7,11 @@ import {
   GithubAuthProvider,
   UserCredential,
 } from "firebase/auth";
-import { auth, getUserProfile, initUserProfile } from "../lib/firebase";
+import { auth, db, getUserProfile, initUserProfile } from "../lib/firebase";
 import { Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import { doc, updateDoc } from "firebase/firestore";
 
 const SignIn = () => {
   const { user, loading } = useContext(AuthContext);
@@ -20,6 +21,9 @@ const SignIn = () => {
       const { user } = await signIn();
       const profile = await getUserProfile(user?.uid);
       if (!profile) await initUserProfile(user);
+      await updateDoc(doc(db, "users", user?.uid), {
+        online: true,
+      });
     } catch (error) {
       console.log(error);
     }

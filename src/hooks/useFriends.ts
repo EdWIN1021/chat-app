@@ -10,8 +10,6 @@ const useFriends = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useContext(AuthContext);
 
-  //sub
-
   useEffect(() => {
     let unsubscribe: Unsubscribe | undefined;
 

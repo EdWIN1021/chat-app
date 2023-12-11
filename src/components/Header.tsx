@@ -11,10 +11,11 @@ import MenuItem from "@mui/material/MenuItem";
 import FriendRequestDialog from "./FriendRequestDialog";
 import ProfileDialog from "./ProfileDialog";
 import { useSignOut } from "react-firebase-hooks/auth";
-import { auth } from "../lib/firebase";
+import { auth, db } from "../lib/firebase";
 import { AuthContext } from "../contexts/AuthContext";
 import { useContext, useState } from "react";
 import { ChatContext } from "../contexts/ChatContext";
+import { doc, updateDoc } from "firebase/firestore";
 
 function Header() {
   const { user } = useContext(AuthContext);
@@ -37,6 +38,9 @@ function Header() {
   };
 
   const handleLogOut = async () => {
+    await updateDoc(doc(db, "users", user!.uid), {
+      online: false,
+    });
     await signOut();
     handleCloseUserMenu();
     updateReceiver(null);
@@ -58,6 +62,7 @@ function Header() {
                   <IconButton onClick={handleOpenUserMenu}>
                     <Avatar
                       src={user?.photoURL || "/static/images/avatar/2.jpg"}
+                      imgProps={{ referrerPolicy: "no-referrer" }}
                     />
                   </IconButton>
                 </Tooltip>

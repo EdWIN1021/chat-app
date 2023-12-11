@@ -1,11 +1,11 @@
 import { ReactNode, createContext, FC } from "react";
 
-import { User } from "firebase/auth";
+import { User as Auth } from "firebase/auth";
 import { auth } from "../lib/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 interface AuthContextProps {
-  user: User | null | undefined;
+  user: Auth | null | undefined;
   loading: boolean;
 }
 

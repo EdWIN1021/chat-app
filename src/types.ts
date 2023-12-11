@@ -5,6 +5,7 @@ export interface Profile {
   userId: string;
   chatId: string;
   friends: Friend[];
+  online: boolean;
 }
 
 export interface Friend {

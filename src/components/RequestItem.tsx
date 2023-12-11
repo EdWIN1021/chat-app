@@ -29,6 +29,7 @@ const RequestItem: React.FC<{
           <Avatar
             src={requestedUser?.photoURL || "/static/images/avatar/1.jpg"}
             variant="rounded"
+            imgProps={{ referrerPolicy: "no-referrer" }}
           />
         </ListItemIcon>
         <ListItemText primary={requestedUser?.displayName} />
