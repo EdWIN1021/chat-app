@@ -9,17 +9,21 @@ import {
 import { Profile } from "../types";
 import { User } from "firebase/auth";
 import { addFriend, deleteRequest } from "../lib/firebase";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 const RequestItem: React.FC<{
   user: User | undefined | null;
   requestedUser: Profile;
-}> = ({ requestedUser, user }) => {
+}> = ({ requestedUser }) => {
+  const { profile } = useContext(AuthContext);
+
   const handleAccept = async () => {
-    if (user) await addFriend(user, requestedUser);
+    if (profile) await addFriend(profile, requestedUser);
   };
 
   const handleDelete = async () => {
-    if (user) await deleteRequest(user?.uid, requestedUser.userId);
+    if (profile) await deleteRequest(profile, requestedUser.userId);
   };
 
   return (

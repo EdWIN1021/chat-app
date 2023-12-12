@@ -57,10 +57,10 @@ export const sendFriendRequest = async (
   });
 };
 
-export const addFriend = async (user: User, sender: Profile) => {
+export const addFriend = async (profile: Profile, sender: Profile) => {
   const chatId = uuidv4();
 
-  await updateDoc(doc(db, "users", user.uid), {
+  await updateDoc(doc(db, "users", profile.userId), {
     friends: arrayUnion({
       userId: sender.userId,
       displayName: sender.displayName,
@@ -71,14 +71,14 @@ export const addFriend = async (user: User, sender: Profile) => {
 
   await updateDoc(doc(db, "users", sender.userId), {
     friends: arrayUnion({
-      userId: user.uid,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
+      userId: profile.userId,
+      displayName: profile.displayName,
+      photoURL: profile.photoURL,
       chatId,
     }),
   });
 
-  await updateDoc(doc(db, "users", user.uid), {
+  await updateDoc(doc(db, "users", profile.userId), {
     requests: arrayRemove(sender.userId),
   });
 
@@ -87,9 +87,9 @@ export const addFriend = async (user: User, sender: Profile) => {
   });
 };
 
-export const deleteRequest = async (userId: string, senderId: string) => {
-  await updateDoc(doc(db, "users", userId), {
-    requests: arrayUnion(senderId),
+export const deleteRequest = async (profile: Profile, senderId: string) => {
+  await updateDoc(doc(db, "users", profile.userId), {
+    requests: arrayRemove(senderId),
   });
 };
 
