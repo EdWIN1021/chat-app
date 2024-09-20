@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom/client";
 import {
-  createBrowserRouter,
+  createHashRouter,
   RouterProvider,
   Route,
   createRoutesFromElements,
@@ -15,7 +15,7 @@ import Auth from "./pages/Auth";
 import AuthProvider from "./contexts/AuthContext";
 import ChatProvider from "./contexts/ChatContext";
 
-const router = createBrowserRouter(
+const router = createHashRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />}>
       <Route index element={<SignIn />} />
